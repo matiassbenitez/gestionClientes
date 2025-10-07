@@ -1,0 +1,26 @@
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Ciudad</th>
+      <th>Teléfono</th>
+      <th>Zona</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% customers.forEach(customer => { %>
+      <tr>
+        <td><%= customer.id %></td>
+        <td><%= customer.name %></td>
+        <td><%= customer.city %></td>
+        <td><%= customer.phone_number %></td>
+        <td><%= customer.zone_id %></td>
+        <td>
+          <a href="/customers/<%= customer.id %>">Ver</a>
+        </td>
+      </tr>
+    <% }); %>
+  </tbody>
+</table>
