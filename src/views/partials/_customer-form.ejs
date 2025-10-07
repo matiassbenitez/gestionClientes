@@ -1,0 +1,28 @@
+<form method="post" action= "<%= customer ? '/customers/update/' + customer.id : '/customers/create' %>">
+  <div>
+    <label for="name">Nombre:</label>
+    <input type="text" id="name" name="name" value="<%= customer ? customer.name : '' %>" required>
+  </div>
+  <div>
+    <label for="city">Ciudad:</label>
+    <input type="text" id="city" name="city" value="<%= customer ? customer.city : '' %>" required>
+  </div>
+  <div>
+    <label for="address">Dirección:</label>
+    <input type="text" id="address" name="address" value="<%= customer ? customer.address : '' %>" required>
+  </div>
+  <div>
+    <label for="phone_number">Teléfono:</label>
+    <input type="text" id="phone_number" name="phone_number" value="<%= customer ? customer.phone_number : '' %>" required>
+  </div>
+  <div>
+    <label for="state">Estado:</label>
+    <input type="text" id="state" name="state" value="<%= customer ? customer.state : '' %>" required>
+  </div>
+  <div>
+    <label for="zone_id">Zona:</label>
+    <input type="number" id="zone_id" name="zone_id" value="<%= customer ? customer.zone_id : '' %>" required>
+  </div>
+  <button type="submit"><%= customer ? 'Actualizar Cliente' : 'Agregar Cliente' %></button>
+  <a href="/" class="btn btn-cancel">Cancelar</a>
+</form>
