@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,4 +35,42 @@
   </button>
 </div>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/style.css"> 
+</head>
+<body>
+  <div class="container">
+    <%- include('partials/messages') %>
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Teléfono</th>
+      <th>Dirección</th>
+    </tr>
+    <tr>
+      <td><%= customer.id %></td>
+      <td><%= customer.name %></td>
+      <td><%= customer.phone_number %></td>
+      <td><%= customer.address %></td>
+    </tr>
+  </table>
+  <button class="btn btn-primary">
+    <a href="/customers/search">Volver a la búsqueda</a>
+  </button>
+  <button>
+    <a href="/customers">Volver a la lista de clientes</a>
+  </button>
+  <button>
+    <a href="/customers/update/<%= customer.id %>">Editar</a>
+  </button>
+</div>
+</body>
+>>>>>>> 30106938222b6e29ea7510cba6c54322ea4978b4
 </html>

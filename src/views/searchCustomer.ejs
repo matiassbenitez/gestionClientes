@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,4 +28,35 @@
     </button>
 </div>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <%- include('partials/messages') %>
+    <form action="/customers/search" method="post">
+      <label for="name">Nombre del cliente:</label>
+      <input type="text" id="name" name="name" required>
+    <button class="btn btn-primary" type="submit">Buscar</button>
+  </form>
+  <% if (searched) { %>
+    <h2>Resultados de la búsqueda:</h2>
+    <% if (customers && customers.length > 0) { %>
+      <%- include('partials/_customers-table', { customers: customers }) %>
+    <% } else { %>
+      <p>No se encontraron clientes con ese nombre.</p>
+    <% } %>
+  <% } %>
+   <button class="btn btn-primary">
+      <a href="/">Volver al inicio</a>
+    </button>
+</div>
+</body>
+>>>>>>> 30106938222b6e29ea7510cba6c54322ea4978b4
 </html>
