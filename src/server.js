@@ -35,11 +35,3 @@ async function startServer() {
 }
 
 startServer()
-import app from './index.js'
-import dotenv from 'dotenv'
-import customerModel from './models/customerModel.js'
-import userModel from './models/userModel.js'
-import transactionModel from './models/transactionModel.js'
-import zoneModel from './models/zoneModel.js'
-
-dotenv.config()
