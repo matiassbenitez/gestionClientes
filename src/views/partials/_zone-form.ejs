@@ -1,0 +1,6 @@
+<form action="<%= zone ? '/zones/update/' + zone.id : '/zones/create' %>" method="post">
+  <label for="name">Nombre de la zona:</label>
+  <input type="text" id="name" name="name" value="<%= zone ? zone.name : '' %>" required>
+  <button class="btn btn-primary" type="submit"><%= zone ? 'Actualizar Zona' : 'Crear Zona' %></button>
+  <a href="/" class="btn btn-cancel">Cancelar</a>
+</form>

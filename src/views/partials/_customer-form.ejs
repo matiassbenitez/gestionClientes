@@ -21,7 +21,12 @@
   </div>
   <div>
     <label for="zone_id">Zona:</label>
-    <input type="number" id="zone_id" name="zone_id" value="<%= customer ? customer.zone_id : '' %>" required>
+    <select id="zone_id" name="zone_id" required>
+    <option value="" disbled <%= !customer ? 'selected' : '' %>>Seleccione una zona</option>
+    <% zones.forEach(function(zone) { %>
+      <option value="<%= zone.id %>" <%= customer && customer.zone_id == zone.id ? 'selected' : '' %>><%= zone.name %></option>
+    <% }) %>
+  </select>
   </div>
   <button type="submit"><%= customer ? 'Actualizar Cliente' : 'Agregar Cliente' %></button>
   <a href="/" class="btn btn-cancel">Cancelar</a>

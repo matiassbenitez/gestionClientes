@@ -11,6 +11,7 @@ const customerModel = {
         city VARCHAR(100),
         state VARCHAR(100),
         zone_id INT,
+        is_deleted BOOLEAN DEFAULT FALSE,
         FOREIGN KEY (zone_id) REFERENCES zone(id)
         );`
         // Agrega otros campos según sea necesario
@@ -23,27 +24,27 @@ const customerModel = {
   }
 },
   getAllCustomers: async () => {
-  const [rows] = await pool.query('SELECT * FROM customer');
+  const [rows] = await pool.query('SELECT * FROM customer WHERE is_deleted = FALSE');
   return rows;
 },
 
 
   getCustomerById: async (id) => {
-  const [rows] = await pool.query('SELECT * FROM customer WHERE id = ?', [id]);
+  const [rows] = await pool.query('SELECT * FROM customer WHERE id = ? AND is_deleted = FALSE', [id]);
   return rows[0];
 },
 
   getCustomerByName: async (name) => {
-  const [rows] = await pool.query('SELECT * FROM customer WHERE name LIKE ?', [`%${name}%`]);
+  const [rows] = await pool.query('SELECT * FROM customer WHERE name LIKE ? AND is_deleted = FALSE', [`%${name}%`]);
   console.log("Query result:", rows);
   console.log([`%${name}$`])
   return rows;
 },
   addCustomer: async (customer) => {
-  const {name, phone_number, address, city, state } = customer;
+  const {name, phone_number, address, city, state, zone_id } = customer;
   const [result] = await pool.query(
-    'INSERT INTO customer (name, phone_number, address, city, state) VALUES (?, ?, ?, ?, ?)',
-    [name, phone_number, address, city, state]
+    'INSERT INTO customer (name, phone_number, address, city, state, zone_id) VALUES (?, ?, ?, ?, ?, ?)',
+    [name, phone_number, address, city, state, zone_id]
   );
   return { id: result.insertId, ...customer };
 },

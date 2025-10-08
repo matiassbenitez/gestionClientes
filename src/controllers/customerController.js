@@ -24,8 +24,10 @@ const customerController = {
     }
   },
   renderView: (req, res) => {
-    const { customer, customers, viewName, viewTitle } = req;
-    res.render(viewName, { title: viewTitle, customers:customers, customer:customer, searched: true });
+    const { customer, customers, viewName, viewTitle, zones } = req;
+    console.log("zones:", zones);
+    console.log("Rendering view:", viewName);
+    res.render(viewName, { title: viewTitle, customers:customers, customer:customer,zones:zones, searched: true });
   },
   getCustomerByName: async (req, res) => {
     const { name } = req.body;
