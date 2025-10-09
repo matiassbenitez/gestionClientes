@@ -7,6 +7,7 @@ const transactionModel = {
         id INT PRIMARY KEY AUTO_INCREMENT,
         customer_id INT,
         type VARCHAR(50) NOT NULL,
+        method VARCHAR(50) DEFAULT NULL,
         amount DECIMAL(10, 2) NOT NULL,
         transaction_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         is_deleted BOOLEAN DEFAULT FALSE,
@@ -29,15 +30,22 @@ const transactionModel = {
     const [rows] = await pool.query('SELECT * FROM transactions WHERE id = ? AND is_deleted = FALSE', [id]);
     return rows[0];
   },
-  addTransaction: async (transaction) => {
-    const { customer_id, type, amount, transaction_date } = transaction;
+  createTransaction: async (transaction) => {
+  // normalizar
+  console.log('Received transaction data:', transaction);
+  const customer_id = parseInt(transaction.customer_id);
+  const amount = transaction.amount;
+  const type = transaction.type;
+  const method = transaction.method || ''; // o null si no se proporciona
+  const transaction_date = transaction.date || NULL; // o null para usar DEFAULT
+    console.log('Creating transaction with data:', { customer_id, amount, type, method, transaction_date });
     const [result] = await pool.query(
-      'INSERT INTO transactions (customer_id, type, amount, transaction_date) VALUES (?, ?, ?, ?)',
-      [customer_id, type, amount, transaction_date]
+      'INSERT INTO transactions (customer_id, type, method, amount, transaction_date) VALUES (?, ?, ?, ?, ?)',
+      [customer_id, type, method, amount, transaction_date]
     );
     return { id: result.insertId, ...transaction };
   },
-  getTransactionsByCutomerId: async (customer_id) => {
+  getTransactionsByCustomerId: async (customer_id) => {
     const [rows] = await pool.query('SELECT * FROM transactions WHERE customer_id = ?', [customer_id]);
     return rows;
   }

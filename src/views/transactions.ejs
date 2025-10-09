@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/main.js"></script>
+  <script src="/js/transaction.js"></script>
+</head>
+<body>
+  <div class="container">
+    <%- include('partials/messages') %>
+    <%- include('partials/_transaction-form', { customer: customer }) %>
+    <% if (transactions && transactions.length > 0) { %>
+      <h2>Transacciones Existentes</h2>
+      <%- include('partials/_transaction-table', { transactions: transactions }) %>
+    <% } else { %>
+      <h2>No existen transacciones</h2>
+    <% } %>
+  </div>
+</body>
+</html>

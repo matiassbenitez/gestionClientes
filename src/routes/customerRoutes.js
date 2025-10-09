@@ -3,6 +3,7 @@ import customerController from '../controllers/customerController.js';
 import customerMiddleware from '../middlewares/customerMiddleware.js';
 import authMiddleware from '../middlewares/authMiddleware.js';
 import zoneMiddleware from '../middlewares/zoneMiddleware.js';
+import transactionRoutes from './transactionRoutes.js';
 
 
 const router = express.Router();
@@ -53,5 +54,6 @@ router.get('/:id',
   customerMiddleware.setView('customerDetail', 'Detalle del Cliente'), 
   customerController.renderView);
 
+router.use('/:customerId/transactions', transactionRoutes);
 
 export default router;

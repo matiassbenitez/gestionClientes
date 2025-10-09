@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= title %></title>
   <link rel="stylesheet" href="/css/style.css"> 
+  <script src="/js/main.js"></script>
 </head>
 <body>
   <div class="container">
@@ -23,15 +24,9 @@
       <td><%= customer.address %></td>
     </tr>
   </table>
-  <button class="btn btn-primary">
-    <a href="/customers/search">Volver a la búsqueda</a>
-  </button>
-  <button>
-    <a href="/customers">Volver a la lista de clientes</a>
-  </button>
-  <button>
-    <a href="/customers/update/<%= customer.id %>">Editar</a>
-  </button>
+    <a class="btn" href="#" id="backButton" >Volver</a>
+    <a class="btn" href="/customers/update/<%= customer.id %>">Editar</a>
+    <a class="btn" href="/customers/<%= customer.id %>/transactions">Ver Movimientos</a>
 </div>
 </body>
 </html>

@@ -1,0 +1,12 @@
+<table>
+  <tr>
+    <th>Fecha</th>
+    <th>Monto</th>
+  </tr>
+  <% transactions.forEach(transaction => { %>
+    <tr>
+      <td><%= new Date(transaction.transaction_date).toLocaleDateString() %></td>
+      <td><%= transaction.amount %></td>
+    </tr>
+  <% }) %>
+</table>
