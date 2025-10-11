@@ -1,6 +1,6 @@
 <form action="<%= zone ? '/zones/update/' + zone.id : '/zones/create' %>" method="post">
   <label for="name">Nombre de la zona:</label>
-  <input type="text" id="name" name="name" value="<%= zone ? zone.name : '' %>" required>
+  <input type="text" id="name" name="name" value="<%= zone ? zone.name : '' %>" required autofocus>
   <button type="submit"><%= zone ? 'Actualizar Zona' : 'Crear Zona' %></button>
-  <a class="btn" href="/">Cancelar</a>
+  <a class="btn" href="/">Volver</a>
 </form>

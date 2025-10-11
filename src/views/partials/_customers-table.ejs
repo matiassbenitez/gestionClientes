@@ -1,26 +1,27 @@
-<table>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Nombre</th>
-      <th>Ciudad</th>
-      <th>Teléfono</th>
-      <th>Zona</th>
-      <th>Acciones</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% customers.forEach(customer => { %>
-      <tr>
-        <td><%= customer.id %></td>
-        <td><%= customer.name %></td>
-        <td><%= customer.city %></td>
-        <td><%= customer.phone_number %></td>
-        <td><%= customer.zone_id %></td>
-        <td>
-          <a class="btn" href="/customers/<%= customer.id %>">Ver</a>
-        </td>
-      </tr>
-    <% }); %>
-  </tbody>
-</table>
+<div class="data-table customer-list">
+    
+    <div class="fixed-header table-header table-row">
+        <span class="col-id">ID</span>
+        <span class="col-nombre">Nombre</span>
+        <span class="col-ciudad col-hide-mobile">Ciudad</span>
+        <span class="col-telefono">Teléfono</span>
+        <span class="col-zona col-hide-mobile">Zona</span>
+        <span class="col-acciones col-text-center">Acciones</span>
+    </div>
+
+    <div class="table-body">
+        <% customers.forEach(customer => { %>
+            <div class="movement-row customer-item">
+                <span class="col-id"><%= customer.id %></span>
+                <span class="col-nombre"><%= customer.name %></span>
+                <span class="col-ciudad col-hide-mobile"><%= customer.city %></span>
+                <span class="col-telefono"><%= customer.phone_number %></span>
+                <span class="col-zona col-hide-mobile"><%= customer.zone_id %></span>
+                <span class="col-acciones col-text-center">
+                    <a class="btn" href="/customers/<%= customer.id %>">Ver</a>
+                    <a class="btn" href="/customers/<%= customer.id %>/transactions">Ver movimientos</a>
+                </span>
+            </div>
+        <% }); %>
+    </div>
+</div>

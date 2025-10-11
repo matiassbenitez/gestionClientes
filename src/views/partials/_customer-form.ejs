@@ -1,7 +1,7 @@
 <form method="post" action= "<%= customer ? '/customers/update/' + customer.id : '/customers/create' %>">
   <div>
     <label for="name">Nombre:</label>
-    <input type="text" id="name" name="name" value="<%= customer ? customer.name : '' %>" required>
+    <input type="text" id="name" name="name" value="<%= customer ? customer.name : '' %>" required autofocus>
   </div>
   <div>
     <label for="city">Ciudad:</label>

@@ -1,12 +1,28 @@
-<table>
-  <tr>
-    <th>Fecha</th>
-    <th>Monto</th>
-  </tr>
-  <% transactions.forEach(transaction => { %>
-    <tr>
-      <td><%= new Date(transaction.transaction_date).toLocaleDateString() %></td>
-      <td><%= transaction.amount %></td>
-    </tr>
-  <% }) %>
-</table>
+
+<!-- <div class="account-container"> -->
+    <div class="">
+        <p class="balance-label">Saldo Actual:</p>
+        <h1 class="current-balance">$<%= balance %></h1>
+    </div>
+    <div class="data-table">
+      <div class="table-header fixed-header movement-row">
+                <span class="movement-type">Tipo/Detalle</span>
+                <span class="movement-date">Fecha</span>
+                <span class="movement-amount">Monto</span> 
+                <span class="movement-running-balance">Saldo Final</span> 
+      </div>
+        <% transactions.forEach(t => { %>
+            <div class="movement-row">
+     
+                    <span class="movement-type"><%= t.type %></span>
+                    <span class="movement-date"><%= new Date(t.transaction_date).toLocaleDateString() %></span>
+           
+                
+                
+                    <span class="movement-amount  <%= t.type == 'Igreso' ? 'positive' : 'negative' %>">$<%= t.amount %></span>
+                    <span class="movement-running-balance <%= t.Saldo_Acumulado > 0 ? 'positive' : 'negative' %>">$<%= t.Saldo_Acumulado %></span>
+             
+            </div>
+        <% }) %>
+    </div>
+<!-- </div> -->

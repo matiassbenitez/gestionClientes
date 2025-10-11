@@ -11,12 +11,12 @@
       <%- include('partials/messages') %>
         <h1><%= title %></h1>
         
+        <a class="btn" href="/">Volver al inicio</a>
         <% if (customers && customers.length > 0) { %>
             <%- include('partials/_customers-table', { customers: customers }) %>
         <% } else { %>
             <p>No se encontraron clientes.</p>
         <% } %>
-      <a class="btn" href="/">Volver al inicio</a>
     </div>
 </body>
 </html>

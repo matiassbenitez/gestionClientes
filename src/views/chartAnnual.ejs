@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/heads', { title: title }) %>
+<body>
+  <script src="/js/chart-logic.js" defer></script>
+  <div class="container">
+    <canvas id="barChart" data-chart-data='<%- JSON.stringify(chartData) %>'></canvas>
+    <div id="reportTableContainer">
+
+    </div>
+  </div>
+  
+</body>
+</html>

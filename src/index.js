@@ -5,6 +5,7 @@ import authRoutes from './routes/authRoutes.js';
 import mainRoutes from './routes/mainRoutes.js';
 import customerRoutes from './routes/customerRoutes.js';
 import zoneRoutes from './routes/zoneRoutes.js';
+import reportRoutes from './routes/reportRoutes.js';
 import session from 'express-session';
 import flash from 'connect-flash';
 import helmet from 'helmet';
@@ -15,8 +16,10 @@ app.use(helmet(
   {
     contentSecurityPolicy: {
       directives: {
+        scriptSrc: ["'self'", 'https://cdn.jsdelivr.net'], 
+        styleSrc: ["'self'", 'https://cdn.jsdelivr.net'],
         defaultSrc: ["'self'"],
-        connectSrc: ["'self'", "http://localhost:3000", "ws://localhost:3000", "wss://localhost:3000"],
+        connectSrc: ["'self'",'https://cdn.jsdelivr.net/npm/chart.umd.min.js.map', "http://localhost:3000", "ws://localhost:3000", "wss://localhost:3000"],
       }
     }
   }
@@ -38,6 +41,7 @@ app.use((req, res, next) => {
 app.use('/',setupRoutes);
 app.use('/',authRoutes);
 app.use('/',mainRoutes);
+app.use('/',reportRoutes);
 app.use('/customers',customerRoutes);
 app.use('/zones',zoneRoutes);
 export default app;

@@ -216,3 +216,141 @@ form input[type="text"]:focus, form input[type="email"]:focus, form input[type="
         font-size: 1.3em;
     }
 }
+
+.account-container {
+    /* Define la altura máxima del contenedor principal (ej: el 80% de la ventana) */
+    height: 80vh; 
+    width: 100%;
+    display: flex;
+    flex-direction: column; /* Apila la cabecera sobre la lista */
+    border: 1px solid #ccc; /* Para visualizar el límite */
+}
+
+/* 1. Estilo para la Cabecera Fija */
+.fixed-header {
+    padding: 20px;
+    background-color: #f8f8f8;
+    border-bottom: 2px solid #ddd;
+    /* Asegura que no se desplace con el resto del contenido */
+    position: sticky; 
+    top: 0;
+    z-index: 10;
+}
+
+.current-balance {
+    font-size: 2em;
+    color: #28a745; /* Verde para saldo positivo */
+}
+
+/* 2. Estilo para el Contenedor Desplazable */
+.movements-list-wrapper {
+    /* **CLAVE:** Permite el desplazamiento vertical dentro de este DIV */
+    overflow-y: auto; 
+    /* Ocupa el espacio restante después de la cabecera */
+    flex-grow: 1; 
+}
+
+/* Estilos de las filas de movimiento */
+.movement-row {
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 1px solid #eee;
+}
+
+
+.table-row {
+    display: flex;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.positive {
+    color: #28a745; /* Verde */
+    font-weight: bold;
+}
+
+.negative {
+    color: #dc3545; /* Rojo */
+}
+
+#barChart {
+    /* Asegura que el canvas tenga una altura y anchura mínima */
+    width: 100%; /* Ocupa todo el ancho del contenedor */
+    max-width: 800px; /* Limita el ancho máximo para evitar que sea muy grande */
+    height: 400px; /* Dale una altura fija para que se dibuje */
+}
+
+.container {
+    /* Asegura que el contenedor principal también tenga un tamaño visible */
+    width: 90%;
+    margin: 0 auto;
+}
+
+
+.data-table {
+    width: 100%;
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.table-header {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+
+/* Definición de anchos de columna para el reporte Mensual */
+.col-mes {
+    flex: 2; /* Mes ocupa más espacio a la izquierda */
+    padding-left: 10px;
+}
+
+.col-ingreso, .col-egreso, .col-saldo {
+    flex: 3; /* Los montos ocupan más espacio */
+}
+
+/* Alineación de todos los números */
+.col-amount {
+    text-align: right;
+    padding-right: 10px;
+}
+
+
+/* 2. Estilo de Cabecera */
+.table-header {
+    font-weight: bold;
+    background-color: #f0f0f0;
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+
+
+/* Las columnas deben usar flex-grow para repartir el espacio. */
+.customer-list .col-id {
+    flex: 0.5; /* Más pequeño */
+}
+
+.customer-list .col-nombre {
+    flex: 3; /* Más grande para el nombre */
+}
+
+.customer-list .col-ciudad,
+.customer-list .col-telefono,
+.customer-list .col-zona {
+    flex: 1.5;
+    /* text-align: right; <-- Puedes alinear aquí si lo deseas */
+}
+
+.customer-list .col-acciones {
+    flex: 1;
+    text-align: center;
+}
+
+.col-text-center {
+    text-align: center !important;
+}
+
+.customer-item:hover {
+    background-color: #f8f8f8;
+}

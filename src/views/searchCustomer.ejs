@@ -11,8 +11,9 @@
     <%- include('partials/messages') %>
     <form action="/customers/search" method="post">
       <label for="name">Nombre del cliente:</label>
-      <input type="text" id="name" name="name" required>
+      <input type="text" id="name" name="name" required autofocus>
     <button class="btn btn-primary" type="submit">Buscar</button>
+    <a class="btn" href="/">Volver al inicio</a>
   </form>
   <% if (searched) { %>
     <h2>Resultados de la búsqueda:</h2>
@@ -22,7 +23,6 @@
       <p>No se encontraron clientes con ese nombre.</p>
     <% } %>
   <% } %>
-      <a class="btn" href="/">Volver al inicio</a>
 </div>
 </body>
 </html>
