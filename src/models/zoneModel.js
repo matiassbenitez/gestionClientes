@@ -40,6 +40,38 @@ const zoneModel = {
     const [result] = await pool.query(sql, [name, id]);
     return result.affectedRows > 0;
 },
+  getCustomersInZone: async (zoneId) => {
+    const sql = `
+      SELECT
+    c.*,
+    COALESCE(t_saldo.balance, 0) AS balance
+FROM
+    customer c
+LEFT JOIN
+    (
+        -- Subconsulta (derivada) para calcular el saldo de cada cliente
+        SELECT
+            t.customer_id,
+            SUM(CASE
+                -- Tipos que SUMAN al saldo (Ingresos)
+                WHEN t.type = 'Ingreso' THEN t.amount
+                -- Tipos que RESTAN del saldo (Egresos)
+                WHEN t.type = 'Egreso' THEN -t.amount
+                ELSE 0
+            END) AS balance
+        FROM
+            transactions t
+        GROUP BY
+            t.customer_id -- Agrupamos para obtener el saldo total por cliente
+    ) AS t_saldo ON c.id = t_saldo.customer_id -- Unimos el saldo al cliente
+WHERE
+    c.zone_id = 1 AND c.is_deleted = FALSE
+ORDER BY
+    c.CITY
+    `;
+    const [rows] = await pool.query(sql, [zoneId]);
+    return rows;
 }
+};
 
 export default zoneModel;

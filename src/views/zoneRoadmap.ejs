@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/heads', { title: title }) %>
+<div class="container">
+  <h2><%= title %></h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Nombre</th>
+        <th>Dirección</th>
+        <th>Teléfono</th>
+        <th>Saldo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (customers && customers.length > 0) { %>
+        <% let city = ''; %>
+        <% customers.forEach(customer => { %>
+          <% if (customer.city !== city) { %>
+            <tr>
+              <td colspan="4"> <strong><%= customer.city %></strong>
+              </td>
+            </tr>
+            <% city = customer.city; %>
+          <% } %>
+          <tr>
+            <td><%= customer.id %></td>
+            <td><%= customer.name %></td>
+            <td><%= customer.address %></td>
+            <td><%= customer.phone_number %></td>
+            <td < class="<%= customer.balance > 0 ? 'positive' : 'negative' %>"><%= customer.balance %></td>
+          </tr>
+        <% }); %>
+      <% } else { %>
+        <tr>
+          <td colspan="6">No hay clientes en esta zona.</td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>  
+</body>
+</html>

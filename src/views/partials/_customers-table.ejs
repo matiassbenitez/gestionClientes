@@ -9,9 +9,9 @@
         <span class="col-acciones col-text-center">Acciones</span>
     </div>
 
-    <div class="table-body">
+
         <% customers.forEach(customer => { %>
-            <div class="movement-row customer-item">
+            <div class="table-row">
                 <span class="col-id"><%= customer.id %></span>
                 <span class="col-nombre"><%= customer.name %></span>
                 <span class="col-ciudad col-hide-mobile"><%= customer.city %></span>
@@ -19,9 +19,8 @@
                 <span class="col-zona col-hide-mobile"><%= customer.zone_id %></span>
                 <span class="col-acciones col-text-center">
                     <a class="btn" href="/customers/<%= customer.id %>">Ver</a>
-                    <a class="btn" href="/customers/<%= customer.id %>/transactions">Ver movimientos</a>
                 </span>
             </div>
         <% }); %>
-    </div>
+
 </div>

@@ -1,14 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= title %></title>
-  <link rel="stylesheet" href="/css/style.css">
-  <script src="/js/main.js"></script>
-  <script src="/js/transaction.js"></script>
-</head>
+<%- include('partials/heads', { title: title }) %>
 <body>
+  <script src="/js/transaction.js"></script>
   <div class="container">
     <%- include('partials/messages') %>
     <%- include('partials/_transaction-form', { customer: customer }) %>
@@ -17,7 +11,8 @@
       <%- include('partials/_transaction-table', { transactions: transactions, balance: balance }) %>
     <% } else { %>
       <h2>No existen transacciones</h2>
-    <% } %>
+      <% } %>
+      <a href="/" class="btn btn-back">Volver al inicio</a>
   </div>
 </body>
 </html>

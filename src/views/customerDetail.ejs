@@ -1,32 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= title %></title>
-  <link rel="stylesheet" href="/css/style.css"> 
-  <script src="/js/main.js"></script>
-</head>
+<%- include('partials/heads', { title: title }) %>
 <body>
+  <script src="/js/main.js"></script>
   <div class="container">
     <%- include('partials/messages') %>
-    <table>
-      <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Teléfono</th>
-      <th>Dirección</th>
-    </tr>
-    <tr>
-      <td><%= customer.id %></td>
-      <td><%= customer.name %></td>
-      <td><%= customer.phone_number %></td>
-      <td><%= customer.address %></td>
-    </tr>
-  </table>
-    <a class="btn" href="#" id="backButton" >Volver</a>
+    <div class="customer-card">
+    <div class="card-header">
+        <span class="customer-id">ID: <%= customer.id %></span>
+        <h2><%= customer.name %></h2>
+    </div>
+
+    <div class="card-body">
+        <div class="detail-group">
+            <span class="detail-label">Teléfono:</span>
+            <span class="detail-value"><%= customer.phone_number %></span>
+        </div>
+        <div class="detail-group">
+            <span class="detail-label">Dirección:</span>
+            <span class="detail-value"><%= customer.address %></span>
+        </div>
+        <div class="detail-group">
+            <span class="detail-label">Ciudad:</span>
+            <span class="detail-value"><%= customer.city %></span>
+        </div>
+        <div class="detail-group">
+            <span class="detail-label">Provincia:</span>
+            <span class="detail-value"><%= customer.state %></span>
+        </div>
+        <div class="detail-group">
+          <a class="btn" href="#" id="backButton" >Volver</a>
     <a class="btn" href="/customers/update/<%= customer.id %>">Editar</a>
     <a class="btn" href="/customers/<%= customer.id %>/transactions">Ver Movimientos</a>
+        </div>
+      </div>
+    </div>
 </div>
 </body>
 </html>

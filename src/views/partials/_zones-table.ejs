@@ -4,6 +4,7 @@
       <th>ID</th>
       <th>Nombre de la Zona</th>
       <th>Acciones</th>
+      <th>Hoja de ruta</th>
     </tr>
   </thead>
   <tbody>
@@ -13,6 +14,10 @@
         <td><%= zone.name %></td>
         <td>
           <a href="/zones/update/<%= zone.id %>">Modificar</a>
+        </td>
+        <td>
+          <a href="/zones/roadmap/<%= zone.id %>">Ver</a>
+        </td>
       </tr>
     <% }); %>
   </tbody>

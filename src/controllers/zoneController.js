@@ -53,6 +53,22 @@ const zoneController = {
       res.status(500).json({ error: 'Error al obtener la zona' });
     }
   },
+  getZoneRoadmap: async (req, res) => {
+    const { id } = req.params;
+    try {
+      const customers = await zoneModel.getCustomersInZone(id);
+      console.log("Customers in zone:", customers);
+      req.zoneCustomers = customers; // Attach customers to the request object
+      const zone = await zoneModel.getZoneById(id);
+      if (customers && zone) {
+        res.render('zoneRoadmap', { title: `Hoja de Ruta - ${zone.name}`, zone: zone, customers: customers });
+      } else {
+        res.status(404).json({ error: 'Zona no encontrada' });
+      }
+    } catch (err) {
+      res.status(500).json({ error: 'Error al obtener la zona' });
+    }
+  }
 };
 
 export default zoneController;

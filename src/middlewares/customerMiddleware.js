@@ -1,6 +1,7 @@
 
 import customerModel from '../models/customerModel.js';
 
+
 const customerMiddleware = {
   getCustomerByName: async (req, res, next) => {
     const { name } = req.body;
@@ -14,15 +15,17 @@ const customerMiddleware = {
     }
   },
   getCustomerById: async (req, res, next) => {
-    const { id } = req.params;
+    const id  = req.params.id || req.query.id; // Support both URL params and form body
+    console.log("Searching for customer with id:", id);
     try {
       const customer = await customerModel.getCustomerById(id);
       console.log("Found customer:", customer);
       if (customer) {
-        req.customer = customer;
-        next();
+        req.customer = customer; // Attach customer to the request object
+        next(); // Proceed to the next middleware or route handler
       } else {
-        res.status(404).json({ error: 'Cliente no encontrado' });
+        req.flash('error_msg', 'Cliente no encontrado');
+        return res.redirect('/customers/search');
       }
     } catch (err) {
       res.status(500).json({ error: 'Error al obtener el cliente' });

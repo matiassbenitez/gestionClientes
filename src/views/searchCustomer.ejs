@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= title %></title>
-  <link rel="stylesheet" href="/css/style.css">
-</head>
+<%- include('partials/heads', { title: title }) %>
 <body>
   <div class="container">
     <%- include('partials/messages') %>
     <form action="/customers/search" method="post">
       <label for="name">Nombre del cliente:</label>
       <input type="text" id="name" name="name" required autofocus>
-    <button class="btn btn-primary" type="submit">Buscar</button>
-    <a class="btn" href="/">Volver al inicio</a>
+    <button class="btn btn-primary" type="submit">Buscar por Nombre</button>
   </form>
+  <form action="/customers/idsearch" method="get">
+    <label for="id">Id del cliente:</label>
+    <input type="number" id="id" name="id" required>
+    <button class="btn btn-primary" type="submit">Buscar por Id</button>
+  </form>
+  <a class="btn btn-back" href="/">Volver al inicio</a>
   <% if (searched) { %>
     <h2>Resultados de la búsqueda:</h2>
     <% if (customers && customers.length > 0) { %>

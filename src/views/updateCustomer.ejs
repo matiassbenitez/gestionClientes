@@ -1,12 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= title %></title>
-  <link rel="stylesheet" href="/css/style.css">
-  <link rel="shortcut icon" href="/img/calculator_9403692.png" type="image/x-icon">
-</head>
+<%- include('partials/heads', { title: title }) %>
 <body>
   <div class="container">
     <% if (zones && zones.length > 0) { %>
@@ -14,7 +8,7 @@
     <% } else { %>
       <p>No hay zonas disponibles. Por favor, cree una zona antes de agregar o actualizar un cliente.</p>
       <a href="/zones" class="btn">Crear Zona</a>
-      <a href="/" class="btn">Volver al inicio</a>
+      <a href="/" class="btn btn-back">Volver al inicio</a>
     <% } %>
   </div>
 </body>

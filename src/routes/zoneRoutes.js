@@ -17,6 +17,9 @@ router.get('/',
 router.post('/create', 
   authMiddleware,
   zoneController.createZone);
+router.get('/roadmap/:id',
+  authMiddleware,
+  zoneController.getZoneRoadmap);
 //Ruta para mostrar el formulario de actualización de zona
 router.get('/update/:id', 
   authMiddleware,

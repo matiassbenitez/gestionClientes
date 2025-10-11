@@ -46,6 +46,13 @@ router.post('/search',
   zoneMiddleware.attachZones, 
   customerMiddleware.setView('searchCustomer', 'Clientes'), 
   customerController.renderView);
+// Nueva ruta para buscar cliente por ID desde el formulario
+router.get('/idsearch', 
+  authMiddleware, 
+  customerMiddleware.getCustomerById, 
+  zoneMiddleware.attachZones, 
+  customerMiddleware.setView('customerDetail', 'Detalle del cliente'), 
+  customerController.renderView);
 // Ruta para obtener un cliente por ID
 router.get('/:id',
   authMiddleware,

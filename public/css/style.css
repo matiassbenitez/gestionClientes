@@ -228,7 +228,11 @@ form input[type="text"]:focus, form input[type="email"]:focus, form input[type="
 
 /* 1. Estilo para la Cabecera Fija */
 .fixed-header {
-    padding: 20px;
+    /* padding: 20px; */
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 0;
+    padding-right: 0;
     background-color: #f8f8f8;
     border-bottom: 2px solid #ddd;
     /* Asegura que no se desplace con el resto del contenido */
@@ -258,10 +262,19 @@ form input[type="text"]:focus, form input[type="email"]:focus, form input[type="
     border-bottom: 1px solid #eee;
 }
 
+.data-table .fixed-header,
+.data-table .movement-row {
+    display: flex;
+
+}
 
 .table-row {
     display: flex;
-    padding: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 0;
+    padding-right: 0;
+    /* padding: 10px; */
     border-bottom: 1px solid #eee;
 }
 
@@ -295,10 +308,14 @@ form input[type="text"]:focus, form input[type="email"]:focus, form input[type="
     border-radius: 4px;
 }
 
+/* 2. Estilo de Cabecera */
 .table-header {
-    background-color: #f0f0f0;
-    font-weight: bold;
-}
+      font-weight: bold;
+      font-weight: bold;
+      background-color: #f0f0f0;
+      text-transform: uppercase;
+      font-size: 0.9em;
+  }
 
 /* Definición de anchos de columna para el reporte Mensual */
 .col-mes {
@@ -317,15 +334,16 @@ form input[type="text"]:focus, form input[type="email"]:focus, form input[type="
 }
 
 
-/* 2. Estilo de Cabecera */
-.table-header {
-    font-weight: bold;
-    background-color: #f0f0f0;
-    text-transform: uppercase;
-    font-size: 0.9em;
+.customer-list .fixed-header [class^="col-"] {
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
-
+.customer-list [class^="col-"] {
+    padding-left: 10px;
+    padding-right: 10px;
+    box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
+}
 /* Las columnas deben usar flex-grow para repartir el espacio. */
 .customer-list .col-id {
     flex: 0.5; /* Más pequeño */
@@ -333,6 +351,8 @@ form input[type="text"]:focus, form input[type="email"]:focus, form input[type="
 
 .customer-list .col-nombre {
     flex: 3; /* Más grande para el nombre */
+    overflow: hidden;
+    min-width: 0; /* Necesario para que el texto se trunque correctamente */
 }
 
 .customer-list .col-ciudad,
@@ -353,4 +373,63 @@ form input[type="text"]:focus, form input[type="email"]:focus, form input[type="
 
 .customer-item:hover {
     background-color: #f8f8f8;
+}
+
+.customer-card {
+    /* Contenedor principal elegante */
+    max-width: 400px;
+    margin: 30px auto; /* Centrar la tarjeta */
+    padding: 25px;
+    border-radius: 12px;
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    border: 1px solid #eee;
+    font-family: Arial, sans-serif;
+}
+
+.card-header {
+    border-bottom: 2px solid #f0f0f0;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+
+.card-header h2 {
+    margin: 0;
+    color: #333;
+    font-size: 1.8em;
+}
+
+.customer-id {
+    display: block;
+    font-size: 0.8em;
+    color: #888;
+    margin-bottom: 5px;
+}
+
+.detail-group {
+    /* Flexbox para alinear etiqueta y valor */
+    display: flex; 
+    justify-content: space-between; /* Espacio entre los dos */
+    padding: 8px 0;
+    border-bottom: 1px dotted #eee; /* Separador sutil */
+}
+
+.detail-label {
+    font-weight: 600; /* Etiqueta en negrita */
+    color: #555;
+    flex-shrink: 0; /* Evita que la etiqueta se encoja */
+    margin-right: 15px;
+}
+
+.detail-value {
+    color: #333;
+    text-align: right; /* Alinea el valor a la derecha */
+}
+
+.btn-back {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px 0;
+    background-color: var(--secondary-color);
 }
