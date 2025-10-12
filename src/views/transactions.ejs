@@ -8,6 +8,8 @@
     <%- include('partials/_transaction-form', { customer: customer }) %>
     <% if (transactions && transactions.length > 0) { %>
       <h2>Transacciones Existentes</h2>
+      <p>Id: <%= customer.id %></>
+      <h2><%= customer.name %></h2>
       <%- include('partials/_transaction-table', { transactions: transactions, balance: balance }) %>
     <% } else { %>
       <h2>No existen transacciones</h2>

@@ -19,7 +19,7 @@
         <% customers.forEach(customer => { %>
           <% if (customer.city !== city) { %>
             <tr>
-              <td colspan="4"> <strong><%= customer.city %></strong>
+              <td colspan="5"> <strong><%= customer.city %></strong>
               </td>
             </tr>
             <% city = customer.city; %>

@@ -6,7 +6,7 @@
       <%- include('partials/messages') %>
         <h1><%= title %></h1>
         
-        <a class="btn" href="/">Volver al inicio</a>
+        <a class="btn btn-back" href="/">Volver al inicio</a>
         <% if (customers && customers.length > 0) { %>
             <%- include('partials/_customers-table', { customers: customers }) %>
         <% } else { %>

@@ -153,7 +153,7 @@ form label {
     margin-bottom: calc(var(--spacing-unit) * 0.5);
     font-weight: 600;
 }
-form input[type="text"], form input[type="email"], form input[type="password"], form select {
+form input[type="text"], form input[type="email"], form input[type="password"], form input[type="number"], form select {
     width: 100%;
     padding: calc(var(--spacing-unit) * 0.5);
     margin-bottom: calc(var(--spacing-unit) * 1.5);
@@ -161,10 +161,18 @@ form input[type="text"], form input[type="email"], form input[type="password"], 
     border-radius: 4px;
     box-sizing: border-box;
 }
-form input[type="text"]:focus, form input[type="email"]:focus, form input[type="password"]:focus, form select:focus {
+form input[type="text"]:focus, form input[type="email"]:focus, form input[type="password"]:focus, form input[type="number"]:focus, form select:focus {
     border-color: var(--primary-color);
     outline: none;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.button-group {
+    display: flex;
+    flex-wrap: wrap; /* Permite que los botones se envuelvan en pantallas pequeñas */
+    gap: var(--spacing-unit); /* Espacio entre los botones */
+    justify-content: center; /* Centrar los botones */
+    margin-bottom: calc(var(--spacing-unit) * 2);
 }
 
 /* Media Queries para Responsiveness */

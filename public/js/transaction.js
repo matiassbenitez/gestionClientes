@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   function handleContainerVisibility() {
-    if (typeSelect.value === 'ingreso') {
+    if (typeSelect.value === 'Ingreso') {
       methodContainer.style.display = 'block';
       methodSelect.required = true;
     } else {

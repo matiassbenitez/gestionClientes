@@ -1,4 +1,5 @@
 import transactionModel from '../models/transactionModel.js';
+import customerModel from '../models/customerModel.js';
 
 const transactionController = {
   createTransaction: async (req, res) => {
@@ -17,9 +18,11 @@ const transactionController = {
   showTransactionForm: async (req, res) => {
     const customerId = req.params.customerId;
     try {
+      const customer = await customerModel.getCustomerById(customerId);
       const transactions = await transactionModel.getTransactionsByCustomerId(customerId);
       const balance = await transactionModel.getCustomerBalance(customerId);
-      res.render('transactions', { title: 'Transacciones', customer: { id: customerId }, transactions: transactions, balance: balance });
+      res.render('transactions', { title: 'Transacciones', customer:customer, transactions: transactions, balance: balance });
+    //: { id: customerId }
     } catch (err) {
       res.status(500).send('Error al cargar las transacciones');
     }

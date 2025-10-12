@@ -1,5 +1,5 @@
 function goBackOrHome() {
-  if (document.referrer !== "") {
+  if (window.history.length > 1) {
     // Si hay una página de referencia (historial), vuelve.
     window.history.back();
   } else {

@@ -65,7 +65,7 @@ LEFT JOIN
             t.customer_id -- Agrupamos para obtener el saldo total por cliente
     ) AS t_saldo ON c.id = t_saldo.customer_id -- Unimos el saldo al cliente
 WHERE
-    c.zone_id = 1 AND c.is_deleted = FALSE
+    c.zone_id = ? AND c.is_deleted = FALSE
 ORDER BY
     c.CITY
     `;
