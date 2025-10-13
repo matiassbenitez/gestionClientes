@@ -30,12 +30,12 @@ const customerModel = {
 
 
   getCustomerById: async (id) => {
-  const [rows] = await pool.query('SELECT * FROM customer WHERE id = ? AND is_deleted = FALSE', [id]);
+  const [rows] = await pool.query('SELECT * FROM customer WHERE id = ?', [id]);
   return rows[0];
 },
 
   getCustomerByName: async (name) => {
-  const [rows] = await pool.query('SELECT * FROM customer WHERE name LIKE ? AND is_deleted = FALSE', [`%${name}%`]);
+  const [rows] = await pool.query('SELECT * FROM customer WHERE name LIKE ?', [`%${name}%`]);
   console.log("Query result:", rows);
   console.log([`%${name}$`])
   return rows;
@@ -55,7 +55,25 @@ const customerModel = {
       [name, phone_number, address, city, state, zone_id, id]
     );
     return result.affectedRows > 0;
+},
+toggleCustomerStatus: async (id) => {
+  // Primero, obtener el estado actual del cliente
+  const [rows] = await pool.query('SELECT is_deleted FROM customer WHERE id = ?', [id]);
+  if (rows.length === 0) {
+    throw new Error('Cliente no encontrado');
+  }
+  const currentStatus = rows[0].is_deleted;
+  // Alternar el estado
+  const newStatus = !currentStatus;
+  const [result] = await pool.query('UPDATE customer SET is_deleted = ? WHERE id = ?', [newStatus, id]);
+  //devuelve el cliente actualizado
+  if (result.affectedRows > 0) {
+    const [updatedRows] = await pool.query('SELECT * FROM customer WHERE id = ?', [id]);
+    return updatedRows[0];
+  } else {
+    throw new Error('Error al actualizar el estado del cliente');
+  }
 }
-}
+};
 
 export default customerModel;

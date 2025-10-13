@@ -73,6 +73,21 @@ const customerController = {
   getSearchForm: (req, res) => {
     console.log("Rendering search form");
     res.render('searchCustomer', { title: 'Buscar Cliente', customers: [], searched: false });
+  },
+  toggleCustomerStatus: async (req, res) => {
+    const { id } = req.params;
+    console.log("Toggling status for customer ID:", id);
+    try {
+      const updatedCustomer = await customerModel.toggleCustomerStatus(id);
+      if (updatedCustomer) {
+        req.flash('success_msg', `Cliente ${updatedCustomer.is_deleted ? 'deshabilitado' : 'habilitado'} exitosamente`);
+        res.redirect('/customers/' + id);
+      } else {
+        res.status(404).json({ error: 'Cliente no encontrado' });
+      }
+    } catch (err) {
+      res.status(500).json({ error: 'Error al actualizar el estado del cliente' });
+    }
   }
 
 }

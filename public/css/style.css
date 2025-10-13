@@ -10,6 +10,8 @@
     --link-hover-color: #0056b3; /* Color de enlaces al pasar el mouse */
     --border-color: #dee2e6; /* Color de bordes */
     --spacing-unit: 1rem; /* Unidad base para márgenes y paddings */
+    --status-active-color: #28a745; /* Un verde estándar de éxito (Success) */
+    --status-deactive-color: #dc3545; /* Un rojo estándar de peligro (Danger) */
 
 }
 
@@ -120,6 +122,16 @@ button, .btn {
     line-height: 1; /* dejar que el padding determine la altura */
     box-sizing: border-box;
     transition: background-color 0.2s ease-in-out;
+}
+.btn-toggle-active {
+    background-color: var(--status-active-color);
+    color: #fff;
+    padding: calc(var(--spacing-unit) * 0.3) calc(var(--spacing-unit) * 0.7);
+}
+.btn-toggle-deactive {
+    background-color: var(--status-deactive-color);
+    color: #fff;
+    padding: calc(var(--spacing-unit) * 0.3) calc(var(--spacing-unit) * 0.7);
 }
 
 /* hover para ambos */

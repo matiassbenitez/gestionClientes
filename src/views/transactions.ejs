@@ -5,6 +5,7 @@
   <script src="/js/transaction.js"></script>
   <div class="container">
     <%- include('partials/messages') %>
+    <h2>Ingresar Movimiento</h2>
     <%- include('partials/_transaction-form', { customer: customer }) %>
     <% if (transactions && transactions.length > 0) { %>
       <h2>Transacciones Existentes</h2>

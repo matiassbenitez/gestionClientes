@@ -53,6 +53,10 @@ router.get('/idsearch',
   zoneMiddleware.attachZones, 
   customerMiddleware.setView('customerDetail', 'Detalle del cliente'), 
   customerController.renderView);
+  // Ruta para activar/desactivar cliente
+router.get('/:id/toggleStatus', 
+  authMiddleware, 
+  customerController.toggleCustomerStatus);
 // Ruta para obtener un cliente por ID
 router.get('/:id',
   authMiddleware,

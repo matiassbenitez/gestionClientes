@@ -29,5 +29,10 @@ router.get('/update/:id',
 router.post('/update/:id',
   authMiddleware,
   zoneController.updateZone);
+// Ruta para exportar la hoja de ruta de una zona a Excel
+router.get('/export-customers/:id',
+  authMiddleware,
+  zoneController.exportCustomersToExcel);
+
 
 export default router;
