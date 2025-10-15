@@ -9,6 +9,7 @@ import reportRoutes from './routes/reportRoutes.js';
 import session from 'express-session';
 import flash from 'connect-flash';
 import helmet from 'helmet';
+import expressEjsLayouts from 'express-ejs-layouts';
 
 dotenv.config();
 const app = express();
@@ -27,6 +28,7 @@ app.use(helmet(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public')); 
+app.use(expressEjsLayouts);
 app.use(session({
   secret: process.env.SESSION_SECRET || 'defaultsecret',
   resave: false,

@@ -11,7 +11,7 @@
         <% transactions.forEach(t => { %>
             <div class="movement-row">
      
-                    <span class="movement-type"><%= t.type=='Ingreso' ? 'Entrega/' : 'Venta' %><%= t.method %></span>
+                    <span class="movement-type"><%= t.type=='Ingreso' ? 'Entrega/' : 'Mercadería' %><%= t.method %></span>
                     <span class="movement-date"><%= new Date(t.transaction_date).toLocaleDateString() %></span>
                     <span class="movement-amount  <%= t.type == 'Ingreso' ? 'positive' : 'negative' %>">$<%= t.amount %></span>
                     <span class="movement-running-balance <%= t.Saldo_Acumulado > 0 ? 'positive' : 'negative' %>">$<%= t.Saldo_Acumulado %></span>

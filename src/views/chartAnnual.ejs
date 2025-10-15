@@ -1,15 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<%- include('partials/heads', { title: title }) %>
-<body>
-  <script src="/js/chart-logic.js" defer></script>
-  <div class="container">
-    <canvas id="barChart" data-chart-data='<%- JSON.stringify(chartData) %>'></canvas>
-    <div id="reportTableContainer">
-
-    </div>
-    <a href="/" class="btn btn-back">Volver al inicio</a>
-  </div>
-  
-</body>
-</html>
+<script src="/js/chart-logic.js" defer></script>
+<canvas id="barChart" data-chart-data='<%- JSON.stringify(chartData) %>'></canvas>
+<div id="reportTableContainer">
+</div>
+<a href="/" class="btn btn-back">Volver al inicio</a>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

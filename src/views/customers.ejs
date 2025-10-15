@@ -1,17 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<%- include('partials/heads', { title: title }) %>
-<body>
-    <div class="container">
-      <%- include('partials/messages') %>
-        <h1><%= title %></h1>
-        
-        <a class="btn btn-back" href="/">Volver al inicio</a>
-        <% if (customers && customers.length > 0) { %>
-            <%- include('partials/_customers-table', { customers: customers }) %>
-        <% } else { %>
-            <p>No se encontraron clientes.</p>
-        <% } %>
-    </div>
-</body>
-</html>
+<h1><%= title %></h1>
+<a class="btn btn-back" href="/">Volver al inicio</a>
+<% if (customers && customers.length > 0) { %>
+    <%- include('partials/_customers-table', { customers: customers }) %>
+<% } else { %>
+    <p>No se encontraron clientes.</p>
+<% } %>

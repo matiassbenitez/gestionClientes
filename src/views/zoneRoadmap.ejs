@@ -1,46 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<%- include('partials/heads', { title: title }) %>
-<div class="container">
-  <h2><%= title %></h2>
-  <a href="/zones/export-customers/<%= customers[0].zone_id %>" class="btn">Exportar a Excel</a>
-  <table>
-    <thead>
-      <tr>
-        <th>Id</th>
-        <th>Nombre</th>
-        <th>Dirección</th>
-        <th>Teléfono</th>
-        <th>Saldo</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% if (customers && customers.length > 0) { %>
-        <% let city = ''; %>
-        <% customers.forEach(customer => { %>
-          <% if (customer.city !== city) { %>
-            <tr>
-              <td colspan="5"> <strong><%= customer.city %></strong>
-              </td>
-            </tr>
-            <% city = customer.city; %>
-          <% } %>
+<h2><%= title %></h2>
+<a href="/zones/export-customers/<%= customers[0].zone_id %>" class="btn">Exportar a Excel</a>
+<table>
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Nombre</th>
+      <th>Dirección</th>
+      <th>Teléfono</th>
+      <th>Saldo</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if (customers && customers.length > 0) { %>
+      <% let city = ''; %>
+      <% customers.forEach(customer => { %>
+        <% if (customer.city !== city) { %>
           <tr>
-            <td><%= customer.id %></td>
-            <td><%= customer.name %></td>
-            <td><%= customer.address %></td>
-            <td><%= customer.phone_number %></td>
-            <td < class="<%= customer.balance > 0 ? 'positive' : 'negative' %>"><%= customer.balance %></td>
+            <td colspan="5"> <strong><%= customer.city %></strong>
+            </td>
           </tr>
-        <% }); %>
-      <% } else { %>
-        <tr>
-          <td colspan="6">No hay clientes en esta zona.</td>
-        </tr>
+          <% city = customer.city; %>
         <% } %>
-      </tbody>
-    </table>
-    <a href="/" class="btn btn-back">Volver al inicio</a>
-  </div>  
-</body>
-</html>
+        <tr>
+          <td><%= customer.id %></td>
+          <td><%= customer.name %></td>
+          <td><%= customer.address %></td>
+          <td><%= customer.phone_number %></td>
+          <td < class="<%= customer.balance > 0 ? 'positive' : 'negative' %>"><%= customer.balance %></td>
+        </tr>
+      <% }); %>
+    <% } else { %>
+      <tr>
+        <td colspan="6">No hay clientes en esta zona.</td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+  <a href="/" class="btn btn-back">Volver al inicio</a>

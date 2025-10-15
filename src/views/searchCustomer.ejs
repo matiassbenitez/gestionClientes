@@ -1,28 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<%- include('partials/heads', { title: title }) %>
-<body>
-  <div class="container">
-    <%- include('partials/messages') %>
-    <form action="/customers/search" method="post">
-      <label for="name">Nombre del cliente:</label>
-      <input type="text" id="name" name="name" required autofocus>
-    <button class="btn btn-primary" type="submit">Buscar por Nombre</button>
-  </form>
-  <form action="/customers/idsearch" method="get">
-    <label for="id">Id del cliente:</label>
-    <input type="number" id="id" name="id" required>
-    <button class="btn btn-primary" type="submit">Buscar por Id</button>
-  </form>
-  <a class="btn btn-back" href="/">Volver al inicio</a>
-  <% if (searched) { %>
-    <h2>Resultados de la búsqueda:</h2>
-    <% if (customers && customers.length > 0) { %>
-      <%- include('partials/_customers-table', { customers: customers }) %>
-    <% } else { %>
-      <p>No se encontraron clientes con ese nombre.</p>
-    <% } %>
+<form action="/customers/search" method="post">
+    <label for="name">Nombre del cliente:</label>
+    <input type="text" id="name" name="name" required autofocus>
+  <button class="btn btn-primary" type="submit">Buscar por Nombre</button>
+</form>
+<form action="/customers/idsearch" method="get">
+  <label for="id">Id del cliente:</label>
+  <input type="number" id="id" name="id" required>
+  <button class="btn btn-primary" type="submit">Buscar por Id</button>
+</form>
+<a class="btn btn-back" href="/">Volver al inicio</a>
+<% if (searched) { %>
+  <h2>Resultados de la búsqueda:</h2>
+  <% if (customers && customers.length > 0) { %>
+    <%- include('partials/_customers-table', { customers: customers }) %>
+  <% } else { %>
+    <p>No se encontraron clientes con ese nombre.</p>
   <% } %>
-</div>
-</body>
-</html>
+<% } %>

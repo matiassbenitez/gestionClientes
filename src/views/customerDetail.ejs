@@ -1,17 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<%- include('partials/heads', { title: title }) %>
-<body>
-  <script src="/js/main.js"></script>
-  <div class="container">
-    <%- include('partials/messages') %>
-    <div class="customer-card">
+<div class="customer-card">
     <div class="card-header">
         <span class="customer-id">ID: <%= customer.id %></span>
         <% if (customer.is_deleted) { %>
-            <a id="toggleStatusButton" class="btn btn-toggle-active" href="/customers/<%= customer.id %>/toggleStatus">Habilitar Cliente</a>
+        <a
+            id="toggleStatusButton"
+            class="btn btn-toggle-active"
+            href="/customers/<%= customer.id %>/toggleStatus"
+            >Habilitar Cliente</a
+        >
         <% } else { %>
-            <a id="toggleStatusButton" class="btn btn-toggle-deactive" href="/customers/<%= customer.id %>/toggleStatus">Deshabilitar Cliente</a>
+        <a
+            id="toggleStatusButton"
+            class="btn btn-toggle-deactive"
+            href="/customers/<%= customer.id %>/toggleStatus"
+            >Deshabilitar Cliente</a
+        >
         <% } %>
         <h2><%= customer.name %></h2>
     </div>
@@ -34,13 +37,15 @@
             <span class="detail-value"><%= customer.state %></span>
         </div>
         <div class="detail-group">
-          <a class="btn" href="#" id="backButton" >Volver</a>
-    <a class="btn" href="/customers/update/<%= customer.id %>">Editar</a>
-    <a class="btn" href="/customers/<%= customer.id %>/transactions">Movimientos</a>
+            <a class="btn" href="#" id="backButton">Volver</a>
+            <a class="btn" href="/customers/update/<%= customer.id %>"
+                >Editar</a
+            >
+            <a class="btn" href="/customers/<%= customer.id %>/transactions"
+                >Movimientos</a
+            >
         </div>
         <a href="/" class="btn btn-back">Volver al inicio</a>
-      </div>
     </div>
 </div>
-</body>
-</html>
+<script src="/js/main.js"></script>

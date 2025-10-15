@@ -38,6 +38,7 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     max-width: 800px; /* Ancho máximo para legibilidad */
     width: 100%; /* Ocupa todo el ancho disponible hasta el max-width */
+    height:100%;
     box-sizing: border-box; /* Incluir padding y borde en el ancho/alto */
 }
 

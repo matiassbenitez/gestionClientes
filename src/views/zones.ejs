@@ -1,15 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<%- include('partials/heads', { title: title }) %>
-<body>
-  <div class="container">
-    <%- include('partials/messages') %>
-    <h2>Crear Nueva Zona</h2>
-    <%- include('partials/_zone-form', {zone: zone}) %>
-    <% if (zones && zones.length > 0) { %>
-      <h2>Zonas Existentes</h2>
-      <%- include('partials/_zones-table', { zones: zones }) %>
-    <% } %>
-  </div>
-</body>
-</html>
+<h2>Crear Nueva Zona</h2>
+<%- include('partials/_zone-form', {zone: zone}) %>
+<% if (zones && zones.length > 0) { %>
+  <h2>Zonas Existentes</h2>
+  <%- include('partials/_zones-table', { zones: zones }) %>
+<% } %>
