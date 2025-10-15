@@ -5,15 +5,35 @@
   <script src="/js/transaction.js"></script>
   <div class="container">
     <%- include('partials/messages') %>
-    <h2>Ingresar Movimiento</h2>
-    <%- include('partials/_transaction-form', { customer: customer }) %>
+    
+    <!-- Sección de Ingreso de Movimiento (se mantiene) -->
+    <div class="container">
+      <h2>Ingresar Movimiento</h2>
+      <%- include('partials/_transaction-form', { customer: customer }) %>
+    </div>
+    <!-- Bloque de Encabezado de Cliente MEJORADO -->
+    <% if (customer) { %>
+    <div class="customer-header-card">
+      <div class="customer-info">
+        <h1 class="customer-name"><%= customer.name %></h1>
+        <p class="customer-id">ID de Cliente: **<%= customer.id %>**</p>
+      </div>
+      <div class="customer-balance-box">
+        <span class="balance-label">SALDO ACTUAL</span>
+        <!-- Muestra el saldo con formato de moneda y color condicional -->
+        <span class="balance-amount <%= balance >= 0 ? 'balance-positive' : 'balance-negative' %>">
+          <%= (new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(balance)) %>
+        </span>
+      </div>
+    </div>
+    <% } %>
+    
+    <!-- Historial de Transacciones (Lógica de la tabla) -->
     <% if (transactions && transactions.length > 0) { %>
-      <h2>Transacciones Existentes</h2>
-      <p>Id: <%= customer.id %></>
-      <h2><%= customer.name %></h2>
+      <h2>Historial de Transacciones</h2>
       <%- include('partials/_transaction-table', { transactions: transactions, balance: balance }) %>
     <% } else { %>
-      <h2>No existen transacciones</h2>
+      <h2>No existen transacciones registradas.</h2>
       <% } %>
       <a href="/" class="btn btn-back">Volver al inicio</a>
   </div>

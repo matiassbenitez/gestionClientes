@@ -1,9 +1,6 @@
 
 <!-- <div class="account-container"> -->
-    <div class="movement-row">
-        <h2 class="balance-label">Saldo Actual:</h2>
-        <h1 class="current-balance <%= balance > 0 ? 'positive' : 'negative' %>">$<%= balance %></h1>
-    </div>
+
     <div class="data-table">
       <div class="table-header fixed-header movement-row">
                 <span class="movement-type">Tipo/Detalle</span>
@@ -14,7 +11,7 @@
         <% transactions.forEach(t => { %>
             <div class="movement-row">
      
-                    <span class="movement-type"><%= t.type %></span>
+                    <span class="movement-type"><%= t.type=='Ingreso' ? 'Entrega/' : 'Venta' %><%= t.method %></span>
                     <span class="movement-date"><%= new Date(t.transaction_date).toLocaleDateString() %></span>
                     <span class="movement-amount  <%= t.type == 'Ingreso' ? 'positive' : 'negative' %>">$<%= t.amount %></span>
                     <span class="movement-running-balance <%= t.Saldo_Acumulado > 0 ? 'positive' : 'negative' %>">$<%= t.Saldo_Acumulado %></span>

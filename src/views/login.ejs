@@ -2,15 +2,32 @@
 <html lang="en">
 <%- include('partials/heads', { title: title }) %>
 <body>
-  <div class="container">
-    <form action="/login" method="post">
+  <div class="container login-container">
+    <form action="/login" method="post" class="login-form">
       <%- include('partials/messages') %>
-      <h2>Login</h2>
+      <h2>Iniciar Sesión</h2>   
+      <!-- 1. Mejoras de UX/Accesibilidad en el campo Usuario -->
       <label for="username">Usuario:</label>
-      <input type="text" id="username" name="username" required autofocus>
+      <input 
+        type="text" 
+        id="username" 
+        name="username" 
+        required 
+        autofocus 
+        autocomplete="username"
+        placeholder="Ingresa tu nombre de usuario"
+      >
+      <!-- 2. Mejoras de UX/Accesibilidad en el campo Contraseña -->
       <label for="password">Contraseña:</label>
-      <input type="password" id="password" name="password" required>
-      <button type="submit">Iniciar Sesión</button>
+      <input 
+        type="password" 
+        id="password" 
+        name="password" 
+        required
+        autocomplete="current-password"
+        placeholder="Ingresa tu contraseña"
+      >
+      <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
     </form>
   </div>
 </body>

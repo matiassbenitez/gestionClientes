@@ -453,3 +453,168 @@ form input[type="text"]:focus, form input[type="email"]:focus, form input[type="
     padding: 10px 0;
     background-color: var(--secondary-color);
 }
+/* * Estilos para mensajes de alerta (success y error) 
+ * Estos estilos replican la apariencia de alertas de frameworks modernos.
+ */
+
+/* Contenedor base de todas las alertas */
+.alert {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.5rem; /* Esquinas redondeadas suaves */
+    font-size: 1rem;
+    line-height: 1.5;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    align-items: center; /* Centra verticalmente el contenido */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave para que destaque */
+}
+
+/* Estilo para el mensaje de ÉXITO (success) */
+.alert-success {
+    /* Colores primarios: Verde */
+    color: #0f5132; /* Texto verde oscuro */
+    background-color: #d1e7dd; /* Fondo verde claro */
+    border-color: #badbcc; /* Borde verde medio */
+}
+
+/* Estilo para el mensaje de ERROR (danger) */
+.alert-danger {
+    /* Colores primarios: Rojo */
+    color: #842029; /* Texto rojo oscuro */
+    background-color: #f8d7da; /* Fondo rojo claro */
+    border-color: #f5c2c7; /* Borde rojo medio */
+}
+
+/* Opcional: Iconos para mejorar la claridad visual (usando un prefijo o emoji si no usas librerías de iconos) */
+.alert-success::before {
+    content: "✅ "; /* O usa '✓' o '👍' */
+    margin-right: 0.5rem;
+    font-weight: bold;
+}
+
+.alert-danger::before {
+    content: "❌ "; /* O usa '✗' o '🚨' */
+    margin-right: 0.5rem;
+    font-weight: bold;
+}
+
+/* Estilo para hacerlo responsivo en dispositivos móviles (ajustar padding si es necesario) */
+@media (max-width: 600px) {
+    .alert {
+        padding: 0.75rem;
+        font-size: 0.95rem;
+    }
+}
+
+  .customer-header-card {
+    display: flex;
+    flex-wrap: wrap; /* Permite que los elementos se apilen en móviles */
+    justify-content: space-between;
+    align-items: center;
+    background-color: #e8f5e9; /* Un color suave para destacar, como un verde pálido */
+    border: 1px solid #c8e6c9;
+    border-radius: 12px;
+    padding: 20px 30px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  .customer-info {
+    flex-grow: 1;
+    min-width: 200px; /* Asegura que no se comprima demasiado */
+  }
+  .customer-info h1 {
+    font-size: 2rem;
+    color: #1b5e20; /* Verde oscuro para el nombre */
+    margin: 0 0 5px 0;
+  }
+  .customer-info p {
+    font-size: 1rem;
+    color: #43a047; /* Un verde medio para el ID */
+    margin: 0;
+  }
+  .customer-balance-box {
+    text-align: right;
+    padding-left: 20px;
+  }
+  .balance-label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #555;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+  .balance-amount {
+    display: block;
+    font-size: 2.8rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .balance-positive {
+    color: #388e3c; /* Verde fuerte */
+  }
+  .balance-negative {
+    color: #d32f2f; /* Rojo de alerta */
+  }
+  /* Ajuste para móviles */
+  @media (max-width: 600px) {
+    .customer-header-card {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .customer-balance-box {
+      margin-top: 15px;
+      text-align: left;
+      padding-left: 0;
+    }
+  }
+
+  /* 1. Contenedor principal: Define el layout Grid */
+.data-grid {
+    display: grid;
+    /* Define 6 columnas (0.5fr, 2fr, 1.5fr, 1.5fr, 1fr, 1fr) */
+    grid-template-columns: 1fr 2fr 1.5fr 2fr 1.5fr 2fr;
+    gap: 0; /* Sin espacio entre las celdas */
+}
+
+/* 2. Filas: Usar "display: contents" para que los hijos se alineen directamente en el Grid principal */
+.data-grid .table-row {
+    display: contents; 
+}
+
+/* 3. Estilo de celdas: Asegura que el contenido se ajuste y haya padding */
+/* NOTA: Si ya tienes padding definido en las clases col-*, puedes omitir este paso */
+.data-grid .table-row > span {
+    padding: 8px 12px;
+    border-bottom: 1px solid #eee;
+    /* Esto ayuda a manejar textos largos forzándolos a saltar de línea */
+    word-wrap: break-word; 
+    overflow: hidden;
+    text-overflow: ellipsis; /* Opcional: para mostrar ... */
+}
+
+/* 4. Estilo de encabezados: Para que se vean distintos, si es necesario */
+.data-grid .table-header > span {
+    font-weight: bold;
+    background-color: #f7f7f7;
+    border-bottom: 2px solid #ddd;
+}
+
+@media (max-width: 767px) {
+    
+    /* 1. Redefinir la plantilla de columnas para móvil */
+    .data-grid {
+        /* De las 6 columnas originales, solo quedan visibles 4: ID, Nombre, Teléfono, Acciones */
+        grid-template-columns: 1fr 2fr 2fr 2fr; 
+        /* ID(0.5) | Nombre(3) | Teléfono(2) | Acciones(1) */
+        min-width: 100%; /* Asegura que ocupe todo el ancho del contenedor */
+    }
+
+    /* 2. Asegurar que las columnas ocultas realmente no se muestren */
+    .data-grid .col-hide-mobile {
+        display: none;
+    }
+}

@@ -119,18 +119,32 @@ const zoneController = {
         customers.forEach(customer => {
           if (customer.city !== city) {
             city = customer.city;
-            const cityRow = worksheet.addRow([`${city}`]);
-            cityRow.font = { bold: true, size: 14, color: { argb: 'FF0000FF' } };
-            // Estilo para la fila de la ciudad (encabezado agrupador)
-            cityRow.fill = {
-                type: 'pattern',
-                pattern: 'solid',
-                fgColor: { argb: 'FFD9E1F2' } // Color para la fila de la ciudad
-            };
-            cityRow.alignment = { vertical: 'middle', horizontal: 'center' };
+            //const cityRow = worksheet.addRow([`${city}`]);
+            const cityRow = worksheet.addRow([]);
+            // cityRow.font = { bold: true, size: 14, color: { argb: 'FF0000FF' } };
+            // // Estilo para la fila de la ciudad (encabezado agrupador)
+            // cityRow.fill = {
+            //     type: 'pattern',
+            //     pattern: 'solid',
+            //     fgColor: { argb: 'FFD9E1F2' } // Color para la fila de la ciudad
+            // };
+            // cityRow.alignment = { vertical: 'middle', horizontal: 'center' };
+            // worksheet.mergeCells(`A${cityRow.number}:E${cityRow.number}`);
+            // // Aplicar borde a la celda fusionada de la ciudad
+            // cityRow.getCell(1).border = borderStyle; 
             worksheet.mergeCells(`A${cityRow.number}:E${cityRow.number}`);
-            // Aplicar borde a la celda fusionada de la ciudad
-            cityRow.getCell(1).border = borderStyle; 
+            const cityCell = cityRow.getCell(1); // Obtener la celda A, que ahora es la celda fusionada
+
+            // Aplicar estilos SÓLO a la celda fusionada para evitar pintar toda la fila
+            cityCell.value = city;
+            cityCell.font = { bold: true, size: 14, color: { argb: 'FF0000FF' } };
+            cityCell.fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'FFD9E1F2' } // Color para la fila de la ciudad
+            };
+            cityCell.alignment = { vertical: 'middle', horizontal: 'center' };
+            cityCell.border = borderStyle; 
           }
 
           const row = worksheet.addRow({

@@ -1,4 +1,4 @@
-<div class="data-table customer-list">
+<!-- <div class="data-table customer-list">
     
     <div class="fixed-header table-header table-row">
         <span class="col-id">ID</span>
@@ -22,5 +22,30 @@
                 </span>
             </div>
         <% }); %>
+
+</div> -->
+<div class="data-grid customer-list">
+    
+    <div class="fixed-header table-header table-row">
+        <span class="col-id">ID</span>
+        <span class="col-nombre">Nombre</span>
+        <span class="col-ciudad col-hide-mobile">Ciudad</span>
+        <span class="col-telefono">Teléfono</span>
+        <span class="col-zona col-hide-mobile">Zona</span>
+        <span class="col-acciones col-text-center">Acciones</span>
+    </div>
+
+    <% customers.forEach(customer => { %>
+        <div class="table-row">
+            <span class="col-id"><%= customer.id %></span>
+            <span class="col-nombre"><%= customer.name %></span>
+            <span class="col-ciudad col-hide-mobile"><%= customer.city %></span>
+            <span class="col-telefono"><%= customer.phone_number %></span>
+            <span class="col-zona col-hide-mobile"><%= customer.zone_id %></span>
+            <span class="col-acciones col-text-center">
+                <a class="btn" href="/customers/<%= customer.id %>">Ver</a>
+            </span>
+        </div>
+    <% }); %>
 
 </div>

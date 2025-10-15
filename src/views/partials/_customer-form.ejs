@@ -4,10 +4,6 @@
     <input type="text" id="name" name="name" value="<%= customer ? customer.name : '' %>" required autofocus>
   </div>
   <div>
-    <label for="city">Ciudad:</label>
-    <input type="text" id="city" name="city" value="<%= customer ? customer.city : '' %>" required>
-  </div>
-  <div>
     <label for="address">Dirección:</label>
     <input type="text" id="address" name="address" value="<%= customer ? customer.address : '' %>" required>
   </div>
@@ -16,7 +12,11 @@
     <input type="text" id="phone_number" name="phone_number" value="<%= customer ? customer.phone_number : '' %>" required>
   </div>
   <div>
-    <label for="state">Estado:</label>
+    <label for="city">Ciudad:</label>
+    <input type="text" id="city" name="city" value="<%= customer ? customer.city : '' %>" required>
+  </div>
+  <div>
+    <label for="state">Provincia:</label>
     <input type="text" id="state" name="state" value="<%= customer ? customer.state : '' %>" required>
   </div>
   <div>
