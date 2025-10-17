@@ -65,6 +65,6 @@ router.get('/:id',
   customerMiddleware.setView('customerDetail', 'Detalle del Cliente'), 
   customerController.renderView);
 
-router.use('/:customerId/transactions', transactionRoutes);
+//router.use('/:customerId/transactions', transactionRoutes);
 
 export default router;

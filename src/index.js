@@ -4,8 +4,10 @@ import setupRoutes from './routes/setupRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import mainRoutes from './routes/mainRoutes.js';
 import customerRoutes from './routes/customerRoutes.js';
+import transactionRoutes from './routes/transactionRoutes.js';
 import zoneRoutes from './routes/zoneRoutes.js';
 import reportRoutes from './routes/reportRoutes.js';
+import apiRoutes from './routes/apiRoutes.js';
 import session from 'express-session';
 import flash from 'connect-flash';
 import helmet from 'helmet';
@@ -18,9 +20,9 @@ app.use(helmet(
     contentSecurityPolicy: {
       directives: {
         scriptSrc: ["'self'", 'https://cdn.jsdelivr.net'], 
-        styleSrc: ["'self'", 'https://cdn.jsdelivr.net'],
+        styleSrc: ["'self'", 'https://cdn.jsdelivr.net', "'unsafe-inline'"],
         defaultSrc: ["'self'"],
-        connectSrc: ["'self'",'https://cdn.jsdelivr.net/npm/chart.umd.min.js.map', "http://localhost:3000", "ws://localhost:3000", "wss://localhost:3000"],
+        connectSrc: ["'self'",'https://cdn.jsdelivr.net/npm/chart.umd.min.js.map', "http://localhost:3000", "ws://localhost:3000", "wss://localhost:3000", "https://cdn.jsdelivr.net"],
       }
     }
   }
@@ -44,6 +46,9 @@ app.use('/',setupRoutes);
 app.use('/',authRoutes);
 app.use('/',mainRoutes);
 app.use('/',reportRoutes);
+app.use('/api', apiRoutes);
 app.use('/customers',customerRoutes);
 app.use('/zones',zoneRoutes);
+app.use('/transactions', transactionRoutes);
+
 export default app;

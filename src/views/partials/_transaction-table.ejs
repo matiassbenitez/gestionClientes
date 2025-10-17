@@ -1,22 +1,28 @@
 
-<!-- <div class="account-container"> -->
-
-    <div class="data-table">
-      <div class="table-header fixed-header movement-row">
-                <span class="movement-type">Tipo/Detalle</span>
-                <span class="movement-date">Fecha</span>
-                <span class="movement-amount">Monto</span> 
-                <span class="movement-running-balance">Saldo Final</span> 
-      </div>
-        <% transactions.forEach(t => { %>
-            <div class="movement-row">
-     
-                    <span class="movement-type"><%= t.type=='Ingreso' ? 'Entrega/' : 'Mercadería' %><%= t.method %></span>
-                    <span class="movement-date"><%= new Date(t.transaction_date).toLocaleDateString() %></span>
-                    <span class="movement-amount  <%= t.type == 'Ingreso' ? 'positive' : 'negative' %>">$<%= t.amount %></span>
-                    <span class="movement-running-balance <%= t.Saldo_Acumulado > 0 ? 'positive' : 'negative' %>">$<%= t.Saldo_Acumulado %></span>
-             
-            </div>
-        <% }) %>
+<button id="toggle-transactions-button">Mostrar/Ocultar detalle</button>
+<div id="transaction-table" class="data-table">
+  <h2>Historial de Transacciones</h2> 
+    <div class="table-header fixed-header movement-row">
+              <span class="movement-type">Tipo/Detalle</span>
+              <span class="movement-date">Fecha</span>
+              <span class="movement-amount">Monto</span> 
+              <span class="movement-running-balance">Saldo Final</span> 
     </div>
-<!-- </div> -->
+      <% transactions.forEach(t => { %>
+          <div class="movement-row">
+    
+                  <span class="movement-type"><%
+                    if (t.type === 'Egreso') { %>
+                      Venta
+                    <% } else if (t.type === 'Ingreso') { %>
+                      Entrega/<%= t.method %>
+                    <% } else if (t.type === 'Ajuste') { %>
+                      Ajuste/<%= t.description ? t.description : '' %>
+                    <% } %></span>
+                  <span class="movement-date"><%= new Date(t.transaction_date).toLocaleDateString() %></span>
+                  <span class="movement-amount  <%= t.type == 'Ingreso' ? 'positive' : 'negative' %>">$<%= t.amount %></span>
+                  <span class="movement-running-balance <%= t.Saldo_Acumulado > 0 ? 'positive' : 'negative' %>">$<%= t.Saldo_Acumulado %></span>
+            
+          </div>
+      <% }) %>
+</div>

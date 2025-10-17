@@ -16,12 +16,12 @@ const transactionController = {
     }
   },
   showTransactionForm: async (req, res) => {
-    const customerId = req.params.customerId;
+    //const customerId = req.params.customerId;
     try {
-      const customer = await customerModel.getCustomerById(customerId);
-      const transactions = await transactionModel.getTransactionsByCustomerId(customerId);
-      const balance = await transactionModel.getCustomerBalance(customerId);
-      res.render('transactions', { title: 'Transacciones', customer:customer, transactions: transactions, balance: balance });
+      //const customer = await customerModel.getCustomerById(customerId);
+      //const transactions = await transactionModel.getTransactionsByCustomerId(customerId);
+      //const balance = await transactionModel.getCustomerBalance(customerId);
+      res.render('transactions', { title: 'Transacciones' });
     //: { id: customerId }
     } catch (err) {
       res.status(500).send('Error al cargar las transacciones');

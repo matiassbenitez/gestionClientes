@@ -14,9 +14,10 @@
       <option value="" selected disabled>Tipo de Movimiento</option>
       <option value="Egreso">Venta</option>
       <option value="Ingreso">Entrega</option>
+      <option value="Ajuste">Ajuste</option>
     </select>
   </div>
-  <div id="method-container" style="display: none;">
+  <div id="method-container">
     <label for="method">Método de Pago:</label>
     <select id="method" name="method" required>
       <option value="" selected disabled>Método de Pago</option>
@@ -24,6 +25,10 @@
       <option value="Tarjeta">Tarjeta</option>
       <option value="Transferencia">Transferencia</option>
     </select>
+  </div>
+  <div id="description-container">
+    <label for="description">Descripción:</label>
+    <input type="text" id="description" name="description" placeholder="Agregar una descripción"></>
   </div>
   <button type="submit">Agregar Transacción</button>
   <a href="/customers/<%= customer.id %>" class="btn">Cancelar</a>

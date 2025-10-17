@@ -8,6 +8,7 @@ const transactionModel = {
         customer_id INT,
         type VARCHAR(50) NOT NULL,
         method VARCHAR(50) DEFAULT NULL,
+        description VARCHAR(50) DEFAULT NULL,
         amount DECIMAL(10, 2) NOT NULL,
         transaction_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         is_deleted BOOLEAN DEFAULT FALSE,
@@ -49,12 +50,13 @@ const transactionModel = {
   const customer_id = parseInt(transaction.customer_id);
   const amount = transaction.amount;
   const type = transaction.type;
-  const method = transaction.method || ''; // o null si no se proporciona
-  const transaction_date = transaction.date || NULL; // o null para usar DEFAULT
-    console.log('Creating transaction with data:', { customer_id, amount, type, method, transaction_date });
+  const method = transaction.method || null; // o null si no se proporciona
+  const description = transaction.description || null;
+  const transaction_date = transaction.date || null; // o null para usar DEFAULT
+    console.log('Creating transaction with data:', { customer_id, amount, type, method, description, transaction_date });
     const [result] = await pool.query(
-      'INSERT INTO transactions (customer_id, type, method, amount, transaction_date) VALUES (?, ?, ?, ?, ?)',
-      [customer_id, type, method, amount, transaction_date]
+      'INSERT INTO transactions (customer_id, type, method, description, amount, transaction_date) VALUES (?, ?, ?, ?, ?, ?)',
+      [customer_id, type, method, description, amount, transaction_date]
     );
     return { id: result.insertId, ...transaction };
   },
@@ -72,6 +74,7 @@ const transactionModel = {
             WHEN type = 'Ingreso' THEN amount
             -- Si es 'Egreso', resta el monto (asume amount es positivo)
             WHEN type = 'Egreso' THEN -amount
+            WHEN type = 'Ajuste' THEN amount
             -- Si es cualquier otro tipo, maneja el monto como positivo por defecto
             ELSE amount
         END

@@ -1,5 +1,7 @@
 <h2><%= title %></h2>
+<% if (customers && customers.length > 0) { %>
 <a href="/zones/export-customers/<%= customers[0].zone_id %>" class="btn">Exportar a Excel</a>
+<% } %>
 <table>
   <thead>
     <tr>
