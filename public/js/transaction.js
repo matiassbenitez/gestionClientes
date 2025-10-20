@@ -7,6 +7,9 @@ document.addEventListener('DOMContentLoaded', function() {
   const methodSelect = document.getElementById('method');
   const dateInput = document.getElementById('date');
   const customerSearchInput = document.getElementById('customer-search-input');
+  const transactionForm = document.getElementById('transaction-form');
+  const customerIdInput = document.getElementById('customer-id');
+  const customerSelectionParagraph = document.getElementById('p-customer-selection');
 
   function debounce(func, delay) {
       let timeoutId; // Variable para almacenar el ID del temporizador
@@ -47,6 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let resultadosDiv = document.getElementById('customer-search-results');
     if (query.length === 0) {
       if (resultadosDiv) {
+        customerSelectionParagraph.style.display = 'block';
         resultadosDiv.classList.remove('show');
         resultadosDiv.innerHTML = '';
       }
@@ -63,7 +67,9 @@ document.addEventListener('DOMContentLoaded', function() {
       resultadosDiv.className = 'dropdown-menu';
       customerSearchInput.parentNode.insertBefore(resultadosDiv, customerSearchInput.nextSibling);
     }
-    resultadosDiv.style.maxWidth = customerSearchInput.offsetWidth + 'px';
+    resultadosDiv.style.width = customerSearchInput.offsetWidth + 'px';
+    resultadosDiv.style.height = 'auto';
+    resultadosDiv.style.paddingTop = '0';
     console.log("resultados:", resultadosDiv)
     resultadosDiv.classList.add('show');
     resultadosDiv.innerHTML = ''; // Limpiar resultados anteriores
@@ -81,54 +87,56 @@ document.addEventListener('DOMContentLoaded', function() {
       li.addEventListener('click', () => {
         // Al hacer clic en un cliente, llenar el campo oculto y el campo visible
         //document.getElementById('customer_id').value = customer.id;
+        customerIdInput.value = customer.id;
+        //transactionForm.action = `/customers/${customer.id}/transactions/create`;
         resultadosDiv.classList.remove('show');
+        customerSelectionParagraph.style.display = 'none';
         customerSearchInput.value = `${customer.name} (ID: ${customer.id})`; // Actualiza el campo visible
         resultadosDiv.innerHTML = ''; // Limpiar resultados después de la selección
       });
-      ul.appendChild(li);
+      resultadosDiv.appendChild(li);
     });
-    resultadosDiv.appendChild(ul);
   }
   
   if (dateInput) {
       dateInput.value = getTodayDate();
   }
 
-  // function toggleTransactionsVisibility() {
-  //   if (transactionTable.style.display === 'none') {
-  //     transactionTable.style.display = 'block';
-  //   } else {
-  //     transactionTable.style.display = 'none';
-  //   }
-  // }
+  function toggleTransactionsVisibility() {
+    if (transactionTable.style.display === 'none') {
+      transactionTable.style.display = 'block';
+    } else {
+      transactionTable.style.display = 'none';
+    }
+  }
 
-  // function handleContainerVisibility() {
-  //   if (typeSelect.value === 'Ingreso') {
-  //     methodContainer.style.display = 'block';
-  //     methodSelect.required = true;
-  //     descriptionContainer.style.display = 'none';
-  //     descriptionContainer.required = false;
-  //     descriptionContainer.value = '';
-  //   } else if (typeSelect.value === 'Ajuste') {
-  //     descriptionContainer.style.display = 'block';
-  //     descriptionContainer.required = true;
-  //     descriptionContainer.value = '';
-  //     methodContainer.style.display = 'none';
-  //     methodSelect.required = false;
-  //     methodSelect.value = ''; // Limpia la selección si no es requerida
-  //   } else {
-  //     methodContainer.style.display = 'none';
-  //     methodSelect.required = false;
-  //     methodSelect.value = '';
-  //     descriptionContainer.style.display = 'none';
-  //     descriptionContainer.required = false;
-  //     descriptionContainer.value = '';
-  //   }
-  // }
-  // typeSelect.addEventListener('change', handleContainerVisibility);
-  // handleContainerVisibility(); // Inicializa la visibilidad al cargar la página
-  // toggleButton.addEventListener('click', toggleTransactionsVisibility);
-  // toggleTransactionsVisibility(); // Inicializa la visibilidad al cargar la página
+  function handleContainerVisibility() {
+    if (typeSelect.value === 'Ingreso') {
+      methodContainer.style.display = 'block';
+      methodSelect.required = true;
+      descriptionContainer.style.display = 'none';
+      descriptionContainer.required = false;
+      descriptionContainer.value = '';
+    } else if (typeSelect.value === 'Ajuste') {
+      descriptionContainer.style.display = 'block';
+      descriptionContainer.required = true;
+      descriptionContainer.value = '';
+      methodContainer.style.display = 'none';
+      methodSelect.required = false;
+      methodSelect.value = ''; // Limpia la selección si no es requerida
+    } else {
+      methodContainer.style.display = 'none';
+      methodSelect.required = false;
+      methodSelect.value = '';
+      descriptionContainer.style.display = 'none';
+      descriptionContainer.required = false;
+      descriptionContainer.value = '';
+    }
+  }
+  typeSelect.addEventListener('change', handleContainerVisibility);
+  handleContainerVisibility(); // Inicializa la visibilidad al cargar la página
+  toggleButton.addEventListener('click', toggleTransactionsVisibility);
+  toggleTransactionsVisibility(); // Inicializa la visibilidad al cargar la página
 
   function getTodayDate() {
     const today = new Date();

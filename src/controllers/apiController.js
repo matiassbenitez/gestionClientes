@@ -3,14 +3,14 @@ import pool from "../config/db.js";
 const apiController = {
   searchCustomers: async (req, res) => {
     const query = req.query.q;
-    if (!query || query.length < 2) {
+    if (!query || query.length < 1) {
       console.log("Query too short or missing:", query);
       return res.json([]);
     } else {
       try {
         const [rows] = await pool.query(
           'SELECT id, name FROM customer WHERE (name LIKE ? OR id LIKE ?) AND is_deleted = FALSE LIMIT 10',
-          [`%${query}%`, `%${query}%`]
+          [`%${query}%`, `${query}%`]
         );
         console.log("Search results for query", query, ":", rows);
         res.json(rows);

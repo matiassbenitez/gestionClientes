@@ -66,6 +66,7 @@ const transactionModel = {
     transaction_date,
     type,
     method,
+    description,
     amount,
     -- Calcula el saldo acumulado ajustando el signo según el 'type'
     SUM(

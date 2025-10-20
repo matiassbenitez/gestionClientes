@@ -1,16 +1,16 @@
-<form action="/customers/<%= customer.id %>/transactions/create" method="post">
-  <input type="text" name="customer_id" value="<%= customer.id %>" hidden>
+<form action="/transactions/create" method="post" id="transaction-form">
+  <input type="text" id="customer-id" name="customer_id" value="" hidden>
+    <div class="text-end">
+      <label for="date" class="me-5">Fecha:</label>
+      <input type="date" id="date" name="date" value="" required>
+    </div>
   <div>
-    <label for="amount">Monto:</label>
-    <input type="number" id="amount" name="amount" step="0.01" required>
-  </div>
-  <div>
-    <label for="date">Fecha:</label>
-    <input type="date" id="date" name="date" value="" required>
-  </div>
-  <div>
+    <div>
+      <label for="amount">Monto:</label>
+      <input type="number" id="amount" name="amount" step="0.01" required class="form-control-lg">
+    </div>
     <label for="type">Tipo de Movimiento:</label>
-    <select id="type" name="type" required>
+    <select id="type" name="type" required class="form-select-lg">
       <option value="" selected disabled>Tipo de Movimiento</option>
       <option value="Egreso">Venta</option>
       <option value="Ingreso">Entrega</option>
@@ -19,7 +19,7 @@
   </div>
   <div id="method-container">
     <label for="method">Método de Pago:</label>
-    <select id="method" name="method" required>
+    <select id="method" name="method" required class="form-select-lg">
       <option value="" selected disabled>Método de Pago</option>
       <option value="Efectivo">Efectivo</option>
       <option value="Tarjeta">Tarjeta</option>
@@ -31,5 +31,5 @@
     <input type="text" id="description" name="description" placeholder="Agregar una descripción"></>
   </div>
   <button type="submit">Agregar Transacción</button>
-  <a href="/customers/<%= customer.id %>" class="btn">Cancelar</a>
+  <a href="/" class="btn" id="customer-link" >Cancelar</a>
 </form>
