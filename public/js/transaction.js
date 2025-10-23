@@ -73,7 +73,6 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log("resultados:", resultadosDiv)
     resultadosDiv.classList.add('show');
     resultadosDiv.innerHTML = ''; // Limpiar resultados anteriores
-
     if (customers.length === 0) {
       resultadosDiv.innerHTML = '<li>No se encontraron clientes.</li>';
       return;
@@ -85,10 +84,29 @@ document.addEventListener('DOMContentLoaded', function() {
       li.className = 'dropdown-item';
       li.style.cursor = 'pointer';
       li.addEventListener('click', () => {
-        // Al hacer clic en un cliente, llenar el campo oculto y el campo visible
-        //document.getElementById('customer_id').value = customer.id;
         customerIdInput.value = customer.id;
-        //transactionForm.action = `/customers/${customer.id}/transactions/create`;
+        let balance = 0;
+        fetch(`/api/customers/${customer.id}/balance`)
+          .then(response => response.json())
+          .then(data => {
+            balance = data.balance;
+            console.log("Selected customer balance inside fetch:", balance);
+            const balanceDisplay = document.getElementById('customer-balance-display');
+            if (balanceDisplay) {
+              balanceDisplay.textContent = `Balance del cliente: $${balance.toFixed(2)}`;
+              if (balance < 0) {
+                balanceDisplay.classList.add('negative');
+                balanceDisplay.classList.remove('positive');
+              } else {
+                balanceDisplay.classList.remove('negative');
+                balanceDisplay.classList.add('positive');
+            }
+          }
+          })
+          .catch(error => {
+            console.error('Error fetching customer balance:', error);
+          });
+        console.log("Selected customer balance:", balance);
         resultadosDiv.classList.remove('show');
         customerSelectionParagraph.style.display = 'none';
         customerSearchInput.value = `${customer.name} (ID: ${customer.id})`; // Actualiza el campo visible
@@ -102,13 +120,13 @@ document.addEventListener('DOMContentLoaded', function() {
       dateInput.value = getTodayDate();
   }
 
-  function toggleTransactionsVisibility() {
-    if (transactionTable.style.display === 'none') {
-      transactionTable.style.display = 'block';
-    } else {
-      transactionTable.style.display = 'none';
-    }
-  }
+  // function toggleTransactionsVisibility() {
+  //   if (transactionTable.style.display === 'none') {
+  //     transactionTable.style.display = 'block';
+  //   } else {
+  //     transactionTable.style.display = 'none';
+  //   }
+  // }
 
   function handleContainerVisibility() {
     if (typeSelect.value === 'Ingreso') {
@@ -135,8 +153,8 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   typeSelect.addEventListener('change', handleContainerVisibility);
   handleContainerVisibility(); // Inicializa la visibilidad al cargar la página
-  toggleButton.addEventListener('click', toggleTransactionsVisibility);
-  toggleTransactionsVisibility(); // Inicializa la visibilidad al cargar la página
+  // toggleButton.addEventListener('click', toggleTransactionsVisibility);
+  // toggleTransactionsVisibility(); // Inicializa la visibilidad al cargar la página
 
   function getTodayDate() {
     const today = new Date();

@@ -6,5 +6,5 @@ import { Router } from 'express';
 const router = express.Router();
 
 router.get('/search', authMiddleware, apiController.searchCustomers);
-
+router.get('/customers/:customerId/balance', authMiddleware, apiController.getCustomerBalance);
 export default router;

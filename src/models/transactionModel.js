@@ -111,6 +111,102 @@ ORDER BY
       });
     }
     return report;
+  },
+  getBalanceBeforeDate: async (customer_id, date) => {
+    const [rows] = await pool.query(
+      `SELECT 
+        SUM(CASE WHEN type = 'Ingreso' THEN amount ELSE 0 END) AS total_ingreso,
+        SUM(CASE WHEN type = 'Egreso' THEN amount ELSE 0 END) AS total_egreso
+      FROM transactions
+      WHERE customer_id = ? AND transaction_date < ? AND is_deleted = FALSE`,
+      [customer_id, date]
+    );
+    const total_egreso = rows[0].total_egreso || 0;
+    const total_ingreso = rows[0].total_ingreso || 0;
+    return total_ingreso - total_egreso;
+  },
+  getTransactionsByDateRange: async (customer_id, startDate, endDate) => {
+    const [rows] = await pool.query(
+      `SELECT *,
+      SUM(
+          CASE
+              -- Si es 'Ingreso', suma el monto (asume amount es positivo)
+              WHEN type = 'Ingreso' THEN amount
+              -- Si es 'Egreso', resta el monto (asume amount es positivo)
+              WHEN type = 'Egreso' THEN -amount
+              WHEN type = 'Ajuste' THEN amount
+              -- Si es cualquier otro tipo, maneja el monto como positivo por defecto
+              ELSE amount
+          END
+      ) OVER (ORDER BY transaction_date ASC, id ASC) AS Saldo_Acumulado 
+     FROM transactions 
+      WHERE customer_id = ? 
+      AND transaction_date BETWEEN ? AND ? 
+      AND is_deleted = FALSE
+      ORDER BY transaction_date DESC`,
+      [customer_id, startDate, endDate]
+    );
+    return rows;
+  },getInitialBalance: async (customer_id, startDate) => {
+    const [rows] = await pool.query(
+      `SELECT 
+        SUM(CASE WHEN type = 'Ingreso' THEN amount ELSE 0 END) AS total_ingreso,
+        SUM(CASE WHEN type = 'Egreso' THEN amount ELSE 0 END) AS total_egreso,
+        SUM(CASE WHEN type = 'Ajuste' THEN amount ELSE 0 END) AS total_ajuste
+      FROM transactions
+      WHERE customer_id = ? AND transaction_date < ? AND is_deleted = FALSE`,
+      [customer_id, startDate]
+    );
+    const total_egreso = Number(rows[0].total_egreso) || 0;
+    const total_ingreso = Number(rows[0].total_ingreso) || 0;
+    const total_ajuste = Number(rows[0].total_ajuste) || 0;
+    console.log(`Initial balance for customer ${customer_id} before ${startDate}: Saldo=${total_ingreso - total_egreso + total_ajuste}`);
+    return total_ingreso - total_egreso + total_ajuste;
+  },
+  getFinalBalance: async (customer_id, endDate) => {
+    const [rows] = await pool.query(
+      `SELECT 
+        SUM(CASE WHEN type = 'Ingreso' THEN amount ELSE 0 END) AS total_ingreso,
+        SUM(CASE WHEN type = 'Egreso' THEN amount ELSE 0 END) AS total_egreso,
+        SUM(CASE WHEN type = 'Ajuste' THEN amount ELSE 0 END) AS total_ajuste
+      FROM transactions
+      WHERE customer_id = ? AND transaction_date <= ? AND is_deleted = FALSE`,
+      [customer_id, endDate]
+    );
+    const total_egreso = Number(rows[0].total_egreso) || 0;
+    const total_ingreso = Number(rows[0].total_ingreso) || 0;
+    const total_ajuste = Number(rows[0].total_ajuste) || 0;
+    console.log(`Final balance for customer ${customer_id} up to ${endDate}: Saldo=${total_ingreso - total_egreso + total_ajuste}`);
+    return total_ingreso - total_egreso + total_ajuste;
+  },
+  getTransactionsByCustomerIdAndDateRange: async (customer_id, startDate, endDate) => {
+    const [rows] = await pool.query(
+      `SELECT
+      id,
+      transaction_date,
+      type,
+      method,
+      description,
+      amount,
+      -- Calcula el saldo acumulado ajustando el signo según el 'type'
+      SUM(
+          CASE
+              -- Si es 'Ingreso', suma el monto (asume amount es positivo)
+              WHEN type = 'Ingreso' THEN amount
+              -- Si es 'Egreso', resta el monto (asume amount es positivo)
+              WHEN type = 'Egreso' THEN -amount
+              WHEN type = 'Ajuste' THEN amount
+              -- Si es cualquier otro tipo, maneja el monto como positivo por defecto
+              ELSE amount
+          END
+      ) OVER (ORDER BY transaction_date ASC, id ASC) AS Saldo_Acumulado 
+  FROM 
+      transactions 
+  WHERE 
+      customer_id = ? AND transaction_date BETWEEN ? AND ?
+  ORDER BY 
+      transaction_date DESC, id DESC`, [customer_id, startDate, endDate]);
+    return rows;
   }
 }
 

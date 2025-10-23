@@ -1,7 +1,18 @@
 
-<button id="toggle-transactions-button">Mostrar/Ocultar detalle</button>
+<button id="export_button">Descargar detalle</button>
+<form action="/transactions" method="GET">
+    <input type="hidden" name="customer_id" value="<%= customer.id %>"> 
+    <label for="startDate">Fecha de Inicio:</label>
+    <input type="date" id="startDate" name="startDate" value="<%= startDate || '' %>">
+    <label for="endDate">Fecha de Fin:</label>
+    <input type="date" id="endDate" name="endDate" value="<%= endDate || '' %>">
+    <button type="submit">Filtrar/Mostrar Historial</button>
+    <a href="/transactions?customer_id=<%= customer.id %>">Limpiar Filtros</a>
+</form>
 <div id="transaction-table" class="data-table">
   <h2>Historial de Transacciones</h2> 
+  <h3 class="text-center text-primary">Id:<%= customer.id %> Nombre: <%= customer.name %></h3>
+  <h4 class="text-center <%= finalBalance >=0 ? 'positive' : 'negative' %>">Saldo: $<%= finalBalance %></h4>
     <div class="table-header fixed-header movement-row fixed-top">
               <span class="movement-type">Tipo/Detalle</span>
               <span class="movement-date">Fecha</span>
@@ -21,8 +32,12 @@
                     <% } %></span>
                   <span class="movement-date w-25 text-center"><%= new Date(t.transaction_date).toLocaleDateString() %></span>
                   <span class="movement-amount w-25 text-center <%= t.type == 'Ingreso' ? 'positive' : 'negative' %>">$<%= t.amount %></span>
-                  <span class="movement-running-balance w-25 text-center <%= t.Saldo_Acumulado > 0 ? 'positive' : 'negative' %>">$<%= t.Saldo_Acumulado %></span>
+                  <span class="movement-running-balance w-25 text-center <%= t.Saldo_Acumulado > 0 ? 'positive' : 'negative' %>">$<%= Number(t.Saldo_Acumulado) + Number(initialBalance) %></span>
             
           </div>
       <% }) %>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="/js/transactionHistory.js"></script>

@@ -18,13 +18,13 @@ const app = express();
 app.use(helmet(
   {
     contentSecurityPolicy: {
-      directives: {
-        scriptSrc: ["'self'", 'https://cdn.jsdelivr.net'], 
+    directives: {
+        scriptSrc: ["'self'", 'https://cdn.jsdelivr.net', 'https://cdnjs.cloudflare.com'], 
         styleSrc: ["'self'", 'https://cdn.jsdelivr.net', "'unsafe-inline'"],
         defaultSrc: ["'self'"],
-        connectSrc: ["'self'",'https://cdn.jsdelivr.net/npm/chart.umd.min.js.map', "http://localhost:3000", "ws://localhost:3000", "wss://localhost:3000", "https://cdn.jsdelivr.net"],
-      }
+        connectSrc: ["'self'",'https://cdn.jsdelivr.net/npm/chart.umd.min.js.map', "http://localhost:3000", "ws://localhost:3000", "wss://localhost:3000", "https://cdn.jsdelivr.net", 'https://cdnjs.cloudflare.com'],
     }
+}
   }
 ));
 app.use(express.json());

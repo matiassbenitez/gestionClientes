@@ -1,4 +1,5 @@
 import pool from "../config/db.js";
+import transactionController from "./transactionController.js";
 
 const apiController = {
   searchCustomers: async (req, res) => {
@@ -17,6 +18,18 @@ const apiController = {
       } catch (err) {
         res.status(500).json({ error: 'Error searching customers' });
       }
+    }
+  },
+  getCustomerBalance: async (req, res) => {
+    try {
+      const customerId = Number(req.params.customerId);
+      if (!customerId) {
+        return res.status(400).json({ error: 'customerId is required' });
+      }
+      const balance = await transactionController.getCustomerBalance(customerId);
+      res.json({ balance });
+    } catch (err) {
+      res.status(500).json({ error: 'Error retrieving customer balance' });
     }
   }
 };
