@@ -1,0 +1,17 @@
+<div class="container-lg">
+  <h2>Ver Historial de Movimientos</h2>
+  <input type="text" id="customer-search-input" class="form-control-lg w-100" placeholder="Buscar cliente por nombre o ID">
+  <div id="customer-search-results" class="dropdown-menu" ></div>
+</div>
+<div class="transaction-form-container">
+  <p id="p-customer-selection">Busque y seleccione un cliente para ver su historial.</p>
+  <div id="customer-balance-display" class="text-center h3" class="mb-3"></div>
+</div>
+<div id="saldo-alert-container"></div>
+<button id="export_button">Descargar detalle</button>
+<div id="transaction-table" class="data-table"></div>
+<a href="/" class="btn btn-back">Volver al inicio</a>
+<script src="/js/utils.js"></script>
+<script src="/js/customerSearch.js"></script>
+<script src="/js/renderHistory.js"></script>
+<script src="/js/transactionHistory.js"></script>
