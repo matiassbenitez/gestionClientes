@@ -1,43 +1,20 @@
-
+<div id="flash-messages"></div>
 <button id="export_button">Descargar detalle</button>
 <form action="/transactions" method="GET">
     <input type="hidden" name="customer_id" value="<%= customer.id %>"> 
+    <input type="hidden" name="customer_name" value="<%= customer.name %>">
     <label for="startDate">Fecha de Inicio:</label>
     <input type="date" id="startDate" name="startDate" value="<%= startDate || '' %>">
     <label for="endDate">Fecha de Fin:</label>
     <input type="date" id="endDate" name="endDate" value="<%= endDate || '' %>">
     <button type="submit">Filtrar/Mostrar Historial</button>
-    <a href="/transactions?customer_id=<%= customer.id %>">Limpiar Filtros</a>
+    <a href="/transactions?customer_id=<%= customer.id %>&customer_name=<$= customer.name %>">Limpiar Filtros</a>
 </form>
-<div id="transaction-table" class="data-table">
-  <h2>Historial de Transacciones</h2> 
-  <h3 class="text-center text-primary">Id:<%= customer.id %> Nombre: <%= customer.name %></h3>
-  <h4 class="text-center <%= finalBalance >=0 ? 'positive' : 'negative' %>">Saldo: $<%= finalBalance %></h4>
-    <div class="table-header fixed-header movement-row fixed-top">
-              <span class="movement-type">Tipo/Detalle</span>
-              <span class="movement-date">Fecha</span>
-              <span class="movement-amount">Monto</span> 
-              <span class="movement-running-balance">Saldo Final</span> 
-    </div>
-      <% transactions.forEach(t => { %>
-          <div class="movement-row">
-    
-                  <span class="movement-type w-25 text-center"><%
-                    if (t.type === 'Egreso') { %>
-                      Venta
-                    <% } else if (t.type === 'Ingreso') { %>
-                      Entrega/<%= t.method %>
-                    <% } else if (t.type === 'Ajuste') { %>
-                      Ajuste/<%= t.description || 'sin desc' %>
-                    <% } %></span>
-                  <span class="movement-date w-25 text-center"><%= new Date(t.transaction_date).toLocaleDateString() %></span>
-                  <span class="movement-amount w-25 text-center <%= t.type == 'Ingreso' ? 'positive' : 'negative' %>">$<%= t.amount %></span>
-                  <span class="movement-running-balance w-25 text-center <%= t.Saldo_Acumulado > 0 ? 'positive' : 'negative' %>">$<%= Number(t.Saldo_Acumulado) + Number(initialBalance) %></span>
-            
-          </div>
-      <% }) %>
-</div>
+<div id="transaction-table" class="data-table"></div>
+<a href="/" class="btn btn-back">Volver al inicio</a>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="/js/renderHistory.js"></script>
 <script src="/js/transactionHistory.js"></script>

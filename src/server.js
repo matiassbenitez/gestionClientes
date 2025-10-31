@@ -4,6 +4,7 @@ import customerModel from './models/customerModel.js'
 import userModel from './models/userModel.js'
 import transactionModel from './models/transactionModel.js'
 import zoneModel from './models/zoneModel.js'
+import debtModel from './models/debtModel.js'
 
 dotenv.config()
 
@@ -17,6 +18,7 @@ async function startServer() {
     await zoneModel.createZoneTable()
     await customerModel.createCustomerTable()
     await transactionModel.createTransactionTable()
+    await debtModel.createDebtTable()
     const userCount = await userModel.countUsers()
     if (userCount === 0) {
       app.locals.isSetupRequired = true

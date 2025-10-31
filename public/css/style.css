@@ -107,7 +107,7 @@ p {
     font-size: 0.9em;
     color: var(--secondary-color);
 }
-button, .btn {
+button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -449,6 +449,7 @@ form input[type="text"]:focus, form input[type="email"]:focus, form input[type="
 
 .btn-back {
     display: block;
+    color: var(--border-color);
     text-align: center;
     margin-top: 20px;
     padding: 10px 0;

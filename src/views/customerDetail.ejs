@@ -4,14 +4,14 @@
         <% if (customer.is_deleted) { %>
         <a
             id="toggleStatusButton"
-            class="btn btn-toggle-active"
+            class="btn btn-outline-success"
             href="/customers/<%= customer.id %>/toggleStatus"
             >Habilitar Cliente</a
         >
         <% } else { %>
         <a
             id="toggleStatusButton"
-            class="btn btn-toggle-deactive"
+            class="btn btn-outline-danger"
             href="/customers/<%= customer.id %>/toggleStatus"
             >Deshabilitar Cliente</a
         >
@@ -37,11 +37,11 @@
             <span class="detail-value"><%= customer.state %></span>
         </div>
         <div class="detail-group">
-            <a class="btn" href="#" id="backButton">Volver</a>
-            <a class="btn" href="/customers/update/<%= customer.id %>"
+            <a class="btn btn-primary" href="#" id="backButton">Volver</a>
+            <a class="btn btn-primary" href="/customers/update/<%= customer.id %>"
                 >Editar</a
             >
-            <a class="btn" href="/transactions?customer_id=<%= customer.id %>"
+            <a class="btn btn-primary" href="/transactions?customer_id=<%= customer.id %>&customer_name=<%= encodeURIComponent(customer.name) %>"
                 >Movimientos</a
             >
         </div>

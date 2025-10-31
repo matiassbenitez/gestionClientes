@@ -1,6 +1,7 @@
 import transactionModel from '../models/transactionModel.js';
 import customerModel from '../models/customerModel.js';
 import PDFDocument from 'pdfkit';
+import apiController from './apiController.js';
 
 const transactionController = {
   createTransaction: async (req, res) => {
@@ -28,26 +29,43 @@ const transactionController = {
       res.status(500).send('Error al cargar las transacciones');
     }
   },
+  searchAndShowTransactionHistory: async (req, res) => {
+    res.render('transactionsHistory', { title: 'Buscar Historial de Transacciones' });
+  },
+  // getCustomerTransactionData: async (customerId, startDate, endDate) => {
+  //   try {
+  //     const customer = await customerModel.getCustomerById(customerId);
+  //     let transactions = [];
+  //     let initialBalance = 0;
+  //     let finalBalance = 0;
+  //     if (startDate && endDate) {
+  //       transactions = await transactionModel.getTransactionsByCustomerIdAndDateRange(customerId, startDate, endDate);
+  //       initialBalance = await transactionModel.getInitialBalance(customerId, startDate);
+  //       finalBalance = await transactionModel.getFinalBalance(customerId, endDate);
+  //     } else {
+  //       transactions = await transactionModel.getTransactionsByCustomerId(customerId);
+  //       finalBalance = await transactionModel.getFinalBalance(customerId, new Date().toISOString().split('T')[0]);
+  //     }
+  //     return { 
+  //       customer, 
+  //       transactions, 
+  //       initialBalance, 
+  //       finalBalance,
+  //       startDate,
+  //       endDate};
+  //   } catch (err) {
+  //     console.error('Error al obtener los datos de transacciones del cliente:', err);
+  //     return { transactions: [], initialBalance: 0, finalBalance: 0 };
+  //   }
+  // },
   showTransactionHistory: async (req, res) => {
     const customerId = Number(req.query.customer_id);
     const { startDate, endDate } = req.query;
     try {
-      const customer = await customerModel.getCustomerById(customerId);
-      let transactions = []
-      let initialBalance = 0;
-      let finalBalance = 0;
-
-      if (startDate && endDate) {
-        transactions = await transactionModel.getTransactionsByCustomerIdAndDateRange(customerId, startDate, endDate);
-        initialBalance = await transactionModel.getInitialBalance(customerId, startDate);
-        finalBalance = await transactionModel.getFinalBalance(customerId, endDate);
-      } else {
-        transactions = await transactionModel.getTransactionsByCustomerId(customerId);
-        finalBalance = await transactionModel.getFinalBalance(customerId, new Date().toISOString().split('T')[0]);
-      }
-      const safeTransactions = JSON.stringify(transactions || []).replace(/</g, '\\u003c');
-      const safeCustomer = JSON.stringify(customer || {}).replace(/</g, '\\u003c');
-      res.render('transactionHistory', { title: 'Historial de Transacciones', customer, transactions, initialBalance, finalBalance, startDate, endDate, safeTransactions, safeCustomer });
+      const data = await apiController.getCustomerTransactionData(customerId, startDate, endDate);
+      const safeTransactions = JSON.stringify(data.transactions || []).replace(/</g, '\\u003c');
+      const safeCustomer = JSON.stringify(data.customer || {}).replace(/</g, '\\u003c');
+      res.render('transactionHistory', { title: 'Historial de Transacciones', ...data, safeTransactions, safeCustomer });
     } catch (err) {
       res.status(500).send('Error al cargar el historial de transacciones' + err.message);
     }
@@ -176,7 +194,7 @@ const transactionController = {
             transactions.forEach(t => {
                 console.log('Drawing transaction row in PDF:', t);
                 let x = centeredStartX;
-                const detalle = t.type === 'Egreso' ? 'Venta' : t.type === 'Ingreso' ? `Entrega/${t.method}` : `Ajuste/${t.description || ''}`;
+                const detalle = t.type === 'Egreso' ? 'Venta' : t.type === 'Ingreso' ? `Ingreso/${t.method}` : `Ajuste/${t.description || ''}`;
                 doc.fillColor('black').text(detalle, x, y);
                 x += columnWidths[0];
                 const fecha = new Date(t.transaction_date).toLocaleDateString();
@@ -208,10 +226,7 @@ const transactionController = {
             } else {
                 doc.fillColor('red').fontSize(14).text(`-$${Math.abs(initialBalance)}`, finalColumnX, y +5);
             }
-            // Dibujar Saldo Final
-            // doc.rect(centeredStartX, y , 400, 20).fill('#e0e0e0').stroke();
-            // doc.fillColor('black').text('SALDO INICIAL', centeredStartX, y + 2);
-            // doc.fillColor('green').text(`$${initialBalance}`, finalColumnX, y + 2);
+
             y += 15;
             
             return y;
@@ -226,7 +241,22 @@ const transactionController = {
         console.error('Error al generar PDF en el servidor:', err);
         res.status(500).send('Error interno al generar el reporte PDF.');
     }
-}
+},
+  toggleTransactionStatus: async (req, res) => {
+    const transactionId = req.body.transaction_id; 
+    try {
+      const updatedTransaction = await transactionModel.toggleTransactionStatus(transactionId);
+      if (updatedTransaction) {
+        req.flash('success_msg', 'Estado de la transacción actualizado exitosamente');
+        res.json({ success: true, message: 'Estado de la transacción actualizado exitosamente' });
+      } else {
+        req.flash('error_msg', 'Transacción no encontrada');
+        res.status(404).json({ error: 'Transacción no encontrada' });
+      }
+    } catch (err) {
+      res.status(500).json({ error: 'Error al actualizar el estado de la transacción' });
+    }
+  }
 };
 
 export default transactionController;

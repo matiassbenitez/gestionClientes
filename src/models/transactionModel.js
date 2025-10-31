@@ -12,6 +12,7 @@ const transactionModel = {
         amount DECIMAL(10, 2) NOT NULL,
         transaction_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         is_deleted BOOLEAN DEFAULT FALSE,
+        is_reconciled BOOLEAN DEFAULT FALSE,
         timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (customer_id) REFERENCES customer(id)
       );`
@@ -83,7 +84,35 @@ const transactionModel = {
 FROM 
     transactions 
 WHERE 
-    customer_id = ?
+    customer_id = ? AND is_deleted = FALSE AND is_reconciled = FALSE
+ORDER BY 
+    transaction_date DESC, id DESC`, [customer_id]);
+    return rows;
+  },
+  getAllTransactionsByCustomerId: async (customer_id) => {
+    const [rows] = await pool.query(`SELECT
+    id,
+    transaction_date,
+    type,
+    method,
+    description,
+    amount,
+    -- Calcula el saldo acumulado ajustando el signo según el 'type'
+    SUM(
+        CASE
+            -- Si es 'Ingreso', suma el monto (asume amount es positivo)
+            WHEN type = 'Ingreso' THEN amount
+            -- Si es 'Egreso', resta el monto (asume amount es positivo)
+            WHEN type = 'Egreso' THEN -amount
+            WHEN type = 'Ajuste' THEN amount
+            -- Si es cualquier otro tipo, maneja el monto como positivo por defecto
+            ELSE amount
+        END
+    ) OVER (ORDER BY transaction_date ASC, id ASC) AS Saldo_Acumulado 
+FROM 
+    transactions 
+WHERE 
+    customer_id = ? AND is_deleted = FALSE AND is_reconciled = FALSE
 ORDER BY 
     transaction_date DESC, id DESC`, [customer_id]);
     return rows;
@@ -118,7 +147,7 @@ ORDER BY
         SUM(CASE WHEN type = 'Ingreso' THEN amount ELSE 0 END) AS total_ingreso,
         SUM(CASE WHEN type = 'Egreso' THEN amount ELSE 0 END) AS total_egreso
       FROM transactions
-      WHERE customer_id = ? AND transaction_date < ? AND is_deleted = FALSE`,
+      WHERE customer_id = ? AND transaction_date < ? AND is_deleted = FALSE AND is_reconciled = FALSE`,
       [customer_id, date]
     );
     const total_egreso = rows[0].total_egreso || 0;
@@ -143,6 +172,7 @@ ORDER BY
       WHERE customer_id = ? 
       AND transaction_date BETWEEN ? AND ? 
       AND is_deleted = FALSE
+      AND is_reconciled = FALSE
       ORDER BY transaction_date DESC`,
       [customer_id, startDate, endDate]
     );
@@ -154,7 +184,7 @@ ORDER BY
         SUM(CASE WHEN type = 'Egreso' THEN amount ELSE 0 END) AS total_egreso,
         SUM(CASE WHEN type = 'Ajuste' THEN amount ELSE 0 END) AS total_ajuste
       FROM transactions
-      WHERE customer_id = ? AND transaction_date < ? AND is_deleted = FALSE`,
+      WHERE customer_id = ? AND transaction_date < ? AND is_deleted = FALSE AND is_reconciled = FALSE`,
       [customer_id, startDate]
     );
     const total_egreso = Number(rows[0].total_egreso) || 0;
@@ -170,7 +200,7 @@ ORDER BY
         SUM(CASE WHEN type = 'Egreso' THEN amount ELSE 0 END) AS total_egreso,
         SUM(CASE WHEN type = 'Ajuste' THEN amount ELSE 0 END) AS total_ajuste
       FROM transactions
-      WHERE customer_id = ? AND transaction_date <= ? AND is_deleted = FALSE`,
+      WHERE customer_id = ? AND transaction_date <= ? AND is_deleted = FALSE AND is_reconciled = FALSE`,
       [customer_id, endDate]
     );
     const total_egreso = Number(rows[0].total_egreso) || 0;
@@ -203,10 +233,27 @@ ORDER BY
   FROM 
       transactions 
   WHERE 
-      customer_id = ? AND transaction_date BETWEEN ? AND ?
+      customer_id = ? AND transaction_date BETWEEN ? AND ? AND is_deleted = FALSE AND is_reconciled = FALSE
   ORDER BY 
       transaction_date DESC, id DESC`, [customer_id, startDate, endDate]);
     return rows;
+  }, toggleTransactionStatus: async (id) => {
+    // Primero, obtener el estado actual de la transacción
+    const [rows] = await pool.query('SELECT is_deleted FROM transactions WHERE id = ?', [id]);
+    if (rows.length === 0) {
+      throw new Error('Transacción no encontrada');
+    }
+    const currentStatus = rows[0].is_deleted;
+    // Alternar el estado
+    const newStatus = !currentStatus;
+    const [result] = await pool.query('UPDATE transactions SET is_deleted = ? WHERE id = ?', [newStatus, id]);
+    //devuelve la transacción actualizada
+    if (result.affectedRows > 0) {
+      const [updatedRows] = await pool.query('SELECT * FROM transactions WHERE id = ?', [id]);
+      return updatedRows[0];
+    } else {
+      throw new Error('Error al actualizar el estado de la transacción');
+    }
   }
 }
 

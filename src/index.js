@@ -8,6 +8,7 @@ import transactionRoutes from './routes/transactionRoutes.js';
 import zoneRoutes from './routes/zoneRoutes.js';
 import reportRoutes from './routes/reportRoutes.js';
 import apiRoutes from './routes/apiRoutes.js';
+import debtRoutes from './routes/debtRoutes.js';
 import session from 'express-session';
 import flash from 'connect-flash';
 import helmet from 'helmet';
@@ -50,5 +51,6 @@ app.use('/api', apiRoutes);
 app.use('/customers',customerRoutes);
 app.use('/zones',zoneRoutes);
 app.use('/transactions', transactionRoutes);
+app.use('/debts', debtRoutes);
 
 export default app;

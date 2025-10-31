@@ -1,0 +1,22 @@
+<table>
+  <thead>
+    <tr>
+      <th class="text-center">ID</th>
+      <th class="text-center">Fecha</th>
+      <th class="text-center">Monto</th>
+      <th class="text-center">Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% debts.forEach(debt => { %>
+      <tr>
+        <td class="text-center"><%= debt.id %></td>
+        <td class="text-center"><%= new Date(debt.debt_date).toLocaleDateString() %></td>
+        <td class="text-center"><%= debt.amount %></td>
+        <td class="text-center">
+          <a class="btn btn-primary" href="/debts/update/<%= debt.id %>">Modificar</a>
+        </td>
+      </tr>
+    <% }); %>
+  </tbody>
+</table>

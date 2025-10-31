@@ -14,7 +14,7 @@ const zoneModel = {
   } catch (err) {
     console.error('Error creating zone table:', err);
   }
-  // Aquí puedes agregar más métodos relacionados con la zona si es necesario
+  
 },
   createZone: async (name) => {
     const sql = 'INSERT INTO zone (name) VALUES (?)';

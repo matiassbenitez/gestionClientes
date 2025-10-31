@@ -1,0 +1,6 @@
+<h2>Crear Deuda</h2>
+<%- include('partials/_debts-form', {debt: debt}) %>
+<% if (debts && debts.length > 0) { %>
+  <h2>Deudas</h2>
+  <%- include('partials/_debts-table', { debts: debts }) %>
+<% } %>

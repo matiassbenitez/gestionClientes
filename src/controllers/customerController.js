@@ -76,7 +76,6 @@ const customerController = {
   },
   toggleCustomerStatus: async (req, res) => {
     const { id } = req.params;
-    console.log("Toggling status for customer ID:", id);
     try {
       const updatedCustomer = await customerModel.toggleCustomerStatus(id);
       if (updatedCustomer) {

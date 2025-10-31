@@ -1,4 +1,4 @@
-import pool from '../db.js';
+import pool from "../config/db.js";
 
 const debtModel = {
   createDebtTable: async () => {
@@ -17,7 +17,7 @@ const debtModel = {
     }
   },
   getAllDebts: async () => {
-    const [rows] = await pool.query('SELECT * FROM debts');
+    const [rows] = await pool.query('SELECT * FROM debts ORDER BY debt_date DESC');
     return rows;
   },
   getDebtById: async (id) => {
@@ -31,7 +31,15 @@ const debtModel = {
       [amount, debt_date]
     );
     return { id: result.insertId, ...debt };
-  }
+  },
+  updateDebt: async (id, debt) => {
+    const { amount, debt_date } = debt;
+    const [result] = await pool.query(
+      'UPDATE debts SET amount = ?, debt_date = ? WHERE id = ?',
+      [amount, debt_date, id]
+    );
+    return result.affectedRows > 0;
+  },
 };
 
 export default debtModel;

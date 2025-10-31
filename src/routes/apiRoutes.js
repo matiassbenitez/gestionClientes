@@ -7,4 +7,5 @@ const router = express.Router();
 
 router.get('/search', authMiddleware, apiController.searchCustomers);
 router.get('/customers/:customerId/balance', authMiddleware, apiController.getCustomerBalance);
+router.get('/customers/:customerId/transactions', authMiddleware, apiController.getCustomerTransactionDataJSON);
 export default router;

@@ -3,8 +3,8 @@
     <tr>
       <th>ID</th>
       <th>Nombre de la Zona</th>
-      <th>Acciones</th>
-      <th>Hoja de ruta</th>
+      <th class="text-center">Acciones</th>
+      <th class="text-center">Hoja de ruta</th>
     </tr>
   </thead>
   <tbody>
@@ -12,11 +12,11 @@
       <tr>
         <td><%= zone.id %></td>
         <td><%= zone.name %></td>
-        <td>
-          <a class="btn" href="/zones/update/<%= zone.id %>">Modificar</a>
+        <td class="text-center">
+          <a class="btn btn-primary" href="/zones/update/<%= zone.id %>">Modificar</a>
         </td>
-        <td>
-          <a class="btn" href="/zones/roadmap/<%= zone.id %>">Ver</a>
+        <td class="text-center">
+          <a class="btn btn-primary" href="/zones/roadmap/<%= zone.id %>">Ver</a>
         </td>
       </tr>
     <% }); %>
