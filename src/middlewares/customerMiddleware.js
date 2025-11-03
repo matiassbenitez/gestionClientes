@@ -1,5 +1,4 @@
-
-import customerModel from '../models/customerModel.js';
+import customerService from '../services/customerService.js';
 
 
 const customerMiddleware = {
@@ -7,7 +6,7 @@ const customerMiddleware = {
     const { name } = req.body;
     console.log("Searching for customer with name:", name);
     try {
-      const customers = await customerModel.getCustomerByName(name);
+      const customers = await customerService.getCustomerByName(name);
       req.customers = customers; // Attach customers to the request object
       next(); // Proceed to the next middleware or route handler
     } catch (err) {
@@ -18,7 +17,7 @@ const customerMiddleware = {
     const id  = req.params.id || req.query.id; // Support both URL params and form body
     console.log("Searching for customer with id:", id);
     try {
-      const customer = await customerModel.getCustomerById(id);
+      const customer = await customerService.getCustomerById(id);
       console.log("Found customer:", customer);
       if (customer) {
         req.customer = customer; // Attach customer to the request object

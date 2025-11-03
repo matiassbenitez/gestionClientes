@@ -1,10 +1,9 @@
 import app from './index.js'
 import dotenv from 'dotenv'
-import customerModel from './models/customerModel.js'
-import userModel from './models/userModel.js'
-import transactionModel from './models/transactionModel.js'
-import zoneModel from './models/zoneModel.js'
-import debtModel from './models/debtModel.js'
+import sequelize from './config/sequelize.js'
+import './config/db.js'
+import userService from './services/userService.js'
+import './models/associations.js'
 
 dotenv.config()
 
@@ -14,12 +13,11 @@ app.set('views', './src/views')
 
 async function startServer() {
   try {
-    await userModel.createUserTable() 
-    await zoneModel.createZoneTable()
-    await customerModel.createCustomerTable()
-    await transactionModel.createTransactionTable()
-    await debtModel.createDebtTable()
-    const userCount = await userModel.countUsers()
+    await sequelize.authenticate()
+    console.log('✅ Conexión a la base de datos establecida correctamente.')
+    await sequelize.sync({force: false})
+    console.log('✅ Modelos sincronizados con la base de datos.')
+    const userCount = await userService.countUsers()
     if (userCount === 0) {
       app.locals.isSetupRequired = true
       console.log('⚠️ No admin user found. Please set up an admin user by sending a POST request to /setup with username and password in the body.')

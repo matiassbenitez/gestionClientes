@@ -1,4 +1,5 @@
-import zoneModel from '../models/zoneModel.js';
+import zoneService from '../services/zoneService.js';
+import customerService from '../services/customerService.js';
 import exceljs from 'exceljs';
 
 const zoneController = {
@@ -12,19 +13,37 @@ const zoneController = {
   },
   createZone: async (req, res) => {
     const { name } = req.body; 
+    if (!name || name.trim() === '') {
+             req.flash('error_msg', 'El nombre de la zona no puede estar vacío.');
+             return res.redirect('/zones/');
+        }
     try {
-      const newZone = await zoneModel.createZone(name);
+      const newZone = await zoneService.createZone({name: name});
       req.flash('success_msg', 'Zona agregada exitosamente');
       res.redirect('/zones/');
     } catch (err) {
-      res.status(500).json({ error: 'Error al agregar la zona' });
+      console.error('Error al agregar la zona:', err);
+            
+            let errorMessage = 'Error desconocido al crear la zona.';
+            
+            // ✅ Gestión de errores específicos de Sequelize (ej: nombre duplicado)
+            if (err.name === 'SequelizeUniqueConstraintError') {
+                errorMessage = 'Esta zona ya existe. Por favor, elige otro nombre.';
+            } else if (err.name === 'SequelizeValidationError') {
+                 // Si hay otras validaciones en el modelo que fallan
+                errorMessage = err.errors[0].message;
+            }
+
+            req.flash('error_msg', errorMessage);
+            res.status(500).json({ error: 'Error al agregar la zona' });
+            return res.redirect('/zones/');
     }
   },
   updateZone: async (req, res) => {
     const { id } = req.params;
     const { name } = req.body;
     try {
-      const success = await zoneModel.updateZone(id, name);
+      const success = await zoneService.updateZone(id, name);
       if (success) {
         req.flash('success_msg', 'Zona actualizada exitosamente');
         res.redirect('/zones/');
@@ -41,7 +60,7 @@ const zoneController = {
   getUpdateZoneForm: async (req, res) => {
     const { id } = req.params;
     try {
-      const zone = await zoneModel.getZoneById(id);
+      const zone = await zoneService.getZoneById(id);
       console.log("zone to update:", zone);
       if (zone) {
         req.zone = zone;
@@ -57,10 +76,10 @@ const zoneController = {
   getZoneRoadmap: async (req, res) => {
     const { id } = req.params;
     try {
-      const customers = await zoneModel.getCustomersInZone(id);
+      const customers = await customerService.getCustomersInZone(id);
       console.log("Customers in zone:", customers);
       req.zoneCustomers = customers; // Attach customers to the request object
-      const zone = await zoneModel.getZoneById(id);
+      const zone = await zoneService.getZoneById(id);
       if (customers && zone) {
         res.render('zoneRoadmap', { title: `Hoja de Ruta - ${zone.name}`, zone: zone, customers: customers });
       } else {
@@ -73,8 +92,8 @@ const zoneController = {
   exportCustomersToExcel: async (req, res) => {
     const { id } = req.params;
     try {
-      const customers = await zoneModel.getCustomersInZone(id);
-      const zone = await zoneModel.getZoneById(id);
+      const customers = await customerService.getCustomersInZone(id);
+      const zone = await zoneService.getZoneById(id);
       if (customers && zone) {
         // Configurar el encabezado para la descarga del archivo Excel
         res.setHeader('Content-Disposition', `attachment; filename=${zone.name}_clientes.xlsx`);

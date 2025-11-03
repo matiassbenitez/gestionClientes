@@ -2,6 +2,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import userModel from '../models/userModel.js';
+import userService from '../services/userService.js';
 import flash from 'connect-flash';
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
 
@@ -39,7 +40,7 @@ setup: async (req, res) => {
 
     // 2. Comprobar si ya se ha realizado el setup (esta lógica es correcta)
     try {
-      const userCount = await userModel.countUsers();
+      const userCount = await userService.countUsers();
       if (userCount > 0) {
         req.flash('error_msg', 'La configuración de administrador ya se ha realizado.');
         return res.redirect('/login');
@@ -64,8 +65,7 @@ setup: async (req, res) => {
 
     // 5. Proceder a la creación del usuario si todas las validaciones son exitosas
     try {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const newUser = await userModel.createUser(username, hashedPassword);
+      const newUser = await userService.createUser({username, password});
       
       // Asumo que req.app.locals.isSetupRequired es una variable global de la aplicación
       req.app.locals.isSetupRequired = false; 

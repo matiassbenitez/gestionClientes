@@ -1,7 +1,7 @@
 import pool from "../config/db.js";
 import transactionController from "./transactionController.js";
-import transactionModel from "../models/transactionModel.js";
-import customerModel from "../models/customerModel.js";
+import transactionService from "../services/transactionService.js";
+import customerService from "../services/customerService.js";
 
 const apiController = {
   searchCustomers: async (req, res) => {
@@ -38,17 +38,17 @@ const apiController = {
     const customerId = Number(req.params.customerId);
     const { startDate, endDate } = req.query;
     try {
-      const customer = await customerModel.getCustomerById(customerId);
+      const customer = await customerService.getCustomerById(customerId);
       let transactions = [];
       let initialBalance = 0;
       let finalBalance = 0;
       if (startDate && endDate) {
-        transactions = await transactionModel.getTransactionsByCustomerIdAndDateRange(customerId, startDate, endDate);
-        initialBalance = await transactionModel.getInitialBalance(customerId, startDate);
-        finalBalance = await transactionModel.getFinalBalance(customerId, endDate);
+        transactions = await transactionService.getTransactionsByDateRange(customerId, startDate, endDate);
+        initialBalance = await transactionService.getInitialBalance(customerId, startDate);
+        finalBalance = await transactionService.getFinalBalance(customerId, endDate);
       } else {
-        transactions = await transactionModel.getTransactionsByCustomerId(customerId);
-        finalBalance = await transactionModel.getFinalBalance(customerId, new Date().toISOString().split('T')[0]);
+        transactions = await transactionService.getTransactionsByCustomerId(customerId);
+        finalBalance = await transactionService.getFinalBalance(customerId, new Date().toISOString().split('T')[0]);
       }
       console.log('Transaction 1: ', transactions[0]);
       const data = { 
@@ -65,17 +65,17 @@ const apiController = {
   },
   getCustomerTransactionData: async (customerId, startDate, endDate) => {
     try {
-      const customer = await customerModel.getCustomerById(customerId);
+      const customer = await customerService.getCustomerById(customerId);
       let transactions = [];
       let initialBalance = 0;
       let finalBalance = 0;
       if (startDate && endDate) {
-        transactions = await transactionModel.getTransactionsByCustomerIdAndDateRange(customerId, startDate, endDate);
-        initialBalance = await transactionModel.getInitialBalance(customerId, startDate);
-        finalBalance = await transactionModel.getFinalBalance(customerId, endDate);
+        transactions = await transactionService.getTransactionsByDateRange(customerId, startDate, endDate);
+        initialBalance = await transactionService.getInitialBalance(customerId, startDate);
+        finalBalance = await transactionService.getFinalBalance(customerId, endDate);
       } else {
-        transactions = await transactionModel.getTransactionsByCustomerId(customerId);
-        finalBalance = await transactionModel.getFinalBalance(customerId, new Date().toISOString().split('T')[0]);
+        transactions = await transactionService.getTransactionsByCustomerId(customerId);
+        finalBalance = await transactionService.getFinalBalance(customerId, new Date().toISOString().split('T')[0]);
       }
       return { 
         customer, 

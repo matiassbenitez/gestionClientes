@@ -1,7 +1,7 @@
-import transactionModel from '../models/transactionModel.js';
-import customerModel from '../models/customerModel.js';
+import customerService from '../services/customerService.js';
 import PDFDocument from 'pdfkit';
 import apiController from './apiController.js';
+import transactionService from '../services/transactionService.js';
 
 const transactionController = {
   createTransaction: async (req, res) => {
@@ -10,7 +10,7 @@ const transactionController = {
 
     try {
       console.log('TRANSACTION DATA:', transactionData);
-      const newTransaction = await transactionModel.createTransaction(transactionData);
+      const newTransaction = await transactionService.createTransaction(transactionData);
       req.flash('success_msg', 'Transacción creada exitosamente');
       res.redirect('/transactions?customer_id=' + customer_id);
     } catch (err) {
@@ -73,7 +73,7 @@ const transactionController = {
   getAnnualReport: async (req, res) => {
     const year = parseInt(req.params.year, 10);
     try {
-      const report = await transactionModel.getAnnualReport(year);
+      const report = await transactionService.getAnnualReport(year);
       console.log("Annual report data:", report);
       res.render('chartAnnual', { title: `Informe Anual ${year}`, chartData:report });
       //res.json(report);
@@ -83,7 +83,7 @@ const transactionController = {
   },
   getCustomerBalance: async (customerId) => {
     try {
-      const balance = await transactionModel.getCustomerBalance(customerId);
+      const balance = await transactionService.getCustomerBalance(customerId);
       return balance;
     } catch (err) {
       console.error('Error al obtener el balance del cliente:', err);
@@ -102,7 +102,7 @@ const transactionController = {
         let finalBalance = 0;
         let customerName = 'Cliente Desconocido'; 
 
-        const customer = await customerModel.getCustomerById(customerId);
+        const customer = await customerService.getCustomerById(customerId);
         if (customer) {
             customerName = customer.name;
         }
@@ -110,8 +110,8 @@ const transactionController = {
         // Si se usan filtros, obtener los saldos y transacciones filtradas
         if (startDate && endDate) {
           console.log("Generating PDF for date range:", startDate, "to", endDate);
-            initialBalance = await transactionModel.getInitialBalance(customerId, startDate);
-            transactions = await transactionModel.getTransactionsByDateRange(customerId, startDate, endDate);
+            initialBalance = await transactionService.getInitialBalance(customerId, startDate);
+            transactions = await transactionService.getTransactionsByDateRange(customerId, startDate, endDate);
             console.log("transactions fetched for PDF:", transactions.length);
             if (transactions && transactions.length > 0) {
                 finalBalance = Number(transactions[0].Saldo_Acumulado) + Number(initialBalance);
@@ -121,7 +121,7 @@ const transactionController = {
         } else {
             // Historial Completo
             console.log("Generating PDF for full transaction history.");
-            transactions = await transactionModel.getTransactionsByCustomerId(customerId);
+            transactions = await transactionService.getTransactionsByCustomerId(customerId);
             if (transactions && transactions.length > 0) {
               finalBalance = Number(transactions[0].Saldo_Acumulado) + Number(initialBalance);
             }
@@ -245,7 +245,7 @@ const transactionController = {
   toggleTransactionStatus: async (req, res) => {
     const transactionId = req.body.transaction_id; 
     try {
-      const updatedTransaction = await transactionModel.toggleTransactionStatus(transactionId);
+      const updatedTransaction = await transactionService.toggleTransactionStatus(transactionId);
       if (updatedTransaction) {
         req.flash('success_msg', 'Estado de la transacción actualizado exitosamente');
         res.json({ success: true, message: 'Estado de la transacción actualizado exitosamente' });

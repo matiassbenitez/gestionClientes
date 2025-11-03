@@ -1,9 +1,9 @@
-import zoneModel from '../models/zoneModel.js';
+import zoneService from '../services/zoneService.js';
 
 const zoneMiddleware = {
   attachZones: async (req, res, next) => {
     try {
-      const zones = await zoneModel.getAllZones();
+      const zones = await zoneService.getAllZones();
       req.zones = zones; // Attach zones to the request object
       next(); // Proceed to the next middleware or route handler
     } catch (err) {

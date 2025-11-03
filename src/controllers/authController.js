@@ -1,4 +1,5 @@
 import userModel from './../models/userModel.js';
+import userService from '../services/userService.js';
 import bcrypt from 'bcryptjs';
 import { validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
@@ -48,23 +49,22 @@ const authController = {
     }
     const { username, password } = req.body;
     try {
-      const user = await userModel.findUserByUsername(username);
-      if (!user || !(await bcrypt.compare(password, user.password))) {
-          req.flash('error_msg', 'Invalid username or password');
-          res.redirect('/login');
+      const result = await userService.loginUser(username, password);
+      if (!result.success) {
+        req.flash('error_msg', 'Invalid username or password');
+        res.redirect('/login');
         //return res.status(401).json({ error: 'Invalid username or password' });
       }
-      const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
       req.flash('success_msg', 'Login successful');
-      req.session.token = token;
+      req.session.token = result.token;
       res.redirect('/');
-      //res.json({ message: 'Login successful', token });
+      //res.json({ message: 'Login successful', token: result.token });
     } catch (error) {
       console.error('Error during login:', error);
       req.flash('error_msg', 'Server error during login');
       res.redirect('/login');
       //res.status(500).json({ error: 'Server error' });
     }
-  }
+  },
 }
 export default authController;

@@ -1,9 +1,9 @@
-import customerModel from '../models/customerModel.js';
+import customerService from '../services/customerService.js';
 
 const customerController = {
   getAllCustomers: async (req, res) => {
     try {
-      const customers = await customerModel.getAllCustomers();
+      const customers = await customerService.getAllCustomers();
       res.render('customers', {title: 'Clientes', customers});
       //res.json(customers);
     } catch (err) {
@@ -13,7 +13,7 @@ const customerController = {
   getCustomerById: async (req, res) => {
     const { id } = req.params; 
     try {
-      const customer = await customerModel.getCustomerById(id);
+      const customer = await customerService.getCustomerById(id);
       if (customer) {
         res.json(customer);
       } else {
@@ -33,7 +33,7 @@ const customerController = {
     const { name } = req.body;
     console.log("Searching for customer with name:", name);
     try {
-      const customers = await customerModel.getCustomerByName(name);
+      const customers = await customerService.getCustomerByName(name);
       console.log("Found customers:", customers);
       res.render('searchCustomer', {title: 'Clientes', customers: customers, searched: true});
     } catch (err) {
@@ -44,7 +44,7 @@ const customerController = {
   addCustomer: async (req, res) => {
     const customerData = req.body;
     try {
-      const newCustomer = await customerModel.addCustomer(customerData);
+      const newCustomer = await customerService.createCustomer(customerData);
       req.flash('success_msg', 'Cliente agregado exitosamente');
       res.redirect('/customers/' + newCustomer.id);
     } catch (err) {
@@ -57,7 +57,7 @@ const customerController = {
     customerData.zone_id = customerData.zone_id ? parseInt(customerData.zone_id) : null;
     console.log("customer data:", customerData);
     try {
-      const success = await customerModel.updateCustomer(id, customerData);
+      const success = await customerService.updateCustomer(id, customerData);
       console.log("Update success:", success);
       if (success) {
         req.flash('success_msg', 'Cliente actualizado exitosamente');
@@ -77,7 +77,7 @@ const customerController = {
   toggleCustomerStatus: async (req, res) => {
     const { id } = req.params;
     try {
-      const updatedCustomer = await customerModel.toggleCustomerStatus(id);
+      const updatedCustomer = await customerService.toggleCustomerStatus(id);
       if (updatedCustomer) {
         req.flash('success_msg', `Cliente ${updatedCustomer.is_deleted ? 'deshabilitado' : 'habilitado'} exitosamente`);
         res.redirect('/customers/' + id);
