@@ -71,11 +71,19 @@ const transactionController = {
     }
   },
   getAnnualReport: async (req, res) => {
-    const year = parseInt(req.params.year, 10);
+    const availableYears = await transactionService.getAvailableYears();
+    let year = availableYears.length > 0 ? availableYears[0] : new Date().getFullYear();
+    if (req.query.year) {
+      year = parseInt(req.query.year, 10);
+    } 
     try {
       const report = await transactionService.getAnnualReport(year);
       console.log("Annual report data:", report);
-      res.render('chartAnnual', { title: `Informe Anual ${year}`, chartData:report });
+      res.render('chartAnnual', { 
+        title: `Informe Anual ${year}`, 
+        availableYears: availableYears,
+        selectedYear: year,
+        chartData:report });
       //res.json(report);
     } catch (err) {
       res.status(500).json({ error: 'Error al generar el informe anual' });

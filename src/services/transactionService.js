@@ -127,6 +127,7 @@ getInitialBalance: async (customer_id, startDate) => {
     },
     getTransactionsByDateRange: async (customer_id, startDate, endDate) => {
         const sequelize = Transaction.sequelize;
+        const initialBalance = await transactionService.getInitialBalance(customer_id, startDate);
 
         try {
             const transactions = await Transaction.findAll({
@@ -138,7 +139,7 @@ getInitialBalance: async (customer_id, startDate) => {
                     'description',
                     'amount',
                     // ✅ Cálculo acumulado para mostrar el historial
-                    [getRunningBalanceLiteral(sequelize), 'Saldo_Acumulado']
+                    [getRunningBalanceLiteral(initialBalance), 'Saldo_Acumulado']
                 ],
                 where: {
                     customer_id: customer_id,
@@ -204,7 +205,7 @@ getInitialBalance: async (customer_id, startDate) => {
     const report = await Transaction.findAll({
       attributes: [
         [sequelize.literal('EXTRACT(MONTH FROM transaction_date)'), 'month'],
-        [sequelize.fn('SUM', sequelize.literal(`CASE WHEN type = 'Ingreso' THEN amount WHEN type = 'Egreso' THEN -amount WHEN (type = 'Ajuste' AND amount > 0) THEN amount ELSE 0 END`)), 'total_ingreso']
+        [sequelize.fn('SUM', sequelize.literal(`CASE WHEN type = 'Ingreso' THEN amount WHEN type = 'Egreso' THEN -amount WHEN (type = 'Ajuste' AND amount > 0) THEN amount ELSE 0 END`)), 'total_ingreso'],
         [sequelize.fn('SUM', sequelize.literal(`CASE WHEN type = 'Egreso' THEN amount WHEN type = 'Ingreso' THEN -amount WHEN (type = 'Ajuste' AND amount < 0) THEN -amount ELSE 0 END`)), 'total_egreso']
       ],
       where:{
@@ -225,7 +226,20 @@ getInitialBalance: async (customer_id, startDate) => {
       });
     }
     return finalReport;
-      }
+  },
+  getAvailableYears: async () => {
+    const sequelize = Transaction.sequelize;
+    const years = await Transaction.findAll({
+      attributes: [
+        [sequelize.fn('DISTINCT', sequelize.fn('EXTRACT', sequelize.literal('YEAR FROM transaction_date'))), 'year']
+      ],
+      where: { is_deleted: false },
+      order: [[sequelize.literal('year'), 'ASC']],
+      raw: true,
+    });
+    return years.map(y => parseInt(y.year));
+  }
+    
   };
 
 export default transactionService;

@@ -63,7 +63,7 @@ function renderTransactionHistory(container, customer, data) {
         </div>
     ` : ''}
           </span>
-          <span class="movement-date w-25 text-center">${new Date(t.transaction_date).toLocaleDateString()}</span>
+          <span class="movement-date w-25 text-center">${new Date(t.transaction_date).toLocaleDateString('es-AR', { timeZone: 'UTC' })}</span>
           <span class="movement-amount w-25 text-center ${t.type === 'Ingreso' || (t.type === 'Ajuste' && t.amount > 0) ? 'positive' : 'negative'}">$${t.amount>0 ? Number(t.amount).toFixed(2): -Number(t.amount).toFixed(2) }</span>
           <span class="movement-running-balance w-25 text-center ${ t.Saldo_Acumulado > 0 ? 'positive' : 'negative'}">$${Number(t.Saldo_Acumulado).toFixed(2)}</span>
           <span class="void-button-container d-inline w-25 text-center">

@@ -29,6 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+
                     // *** IMPORTANTE: AQUI DEBES AGREGAR TU TOKEN CSRF si usas uno ***
                 },
                 body: JSON.stringify({ transaction_id: transactionId }),

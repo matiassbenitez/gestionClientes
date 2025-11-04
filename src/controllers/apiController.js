@@ -85,6 +85,15 @@ const apiController = {
     } catch (err) {
       throw err;  
   }
+  },
+  getAnnualDataJSON: async (req, res, next) => {
+    try {
+      const year = req.query.year ? parseInt(req.query.year) : new Date().getFullYear();
+      const annualData = await transactionService.getAnnualReport(year);
+      return res.json({ success:true, report:annualData });
+    } catch (err) {
+      return next(err);
+    }
   }
 };
 

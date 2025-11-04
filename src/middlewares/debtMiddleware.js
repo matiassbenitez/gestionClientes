@@ -1,9 +1,9 @@
-import debtModel from './../models/debtModel.js';
+import debtService from '../services/debtService.js';
 
 const debtMiddleware = {
   attachDebts: async (req, res, next) => {
     try {
-      const debts = await debtModel.getAllDebts();
+      const debts = await debtService.getAllDebts();
       req.debts = debts;
       next();
     } catch (err) {

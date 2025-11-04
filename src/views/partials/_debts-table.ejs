@@ -11,7 +11,7 @@
     <% debts.forEach(debt => { %>
       <tr>
         <td class="text-center"><%= debt.id %></td>
-        <td class="text-center"><%= new Date(debt.debt_date).toLocaleDateString() %></td>
+        <td class="text-center"><%= new Date(debt.debt_date).toLocaleDateString('es-AR', { timeZone: 'UTC' }) %></td>
         <td class="text-center"><%= debt.amount %></td>
         <td class="text-center">
           <a class="btn btn-primary" href="/debts/update/<%= debt.id %>">Modificar</a>

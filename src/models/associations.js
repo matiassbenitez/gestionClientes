@@ -1,7 +1,5 @@
 import Zone from './zoneModel.js';
 import Customer from './customerModel.js';
-import Debt from './debtModel.js';
-import User from './userModel.js';
 import Transaction from './transactionModel.js';
 
 Customer.belongsTo(Zone, { foreignKey: 'zone_id', as: 'zone' });

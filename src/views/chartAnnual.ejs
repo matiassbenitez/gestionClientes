@@ -1,4 +1,16 @@
 <script src="/js/chart-logic.js" defer></script>
+<form id="reportForm" class="mb-4">
+    <div class="form-group d-flex align-items-center">
+        <label for="yearSelect" class="mr-3">Seleccionar Año:</label>
+        <select name="year" id="yearSelect" class="form-control w-auto mr-3">
+            <% availableYears.forEach(year => { %>
+                <option value="<%= year %>" <%= (year == selectedYear) ? 'selected' : '' %>>
+                    <%= year %>
+                </option>
+            <% }); %>
+        </select>
+        </div>
+</form>
 <canvas id="barChart" data-chart-data='<%- JSON.stringify(chartData) %>'></canvas>
 <div id="reportTableContainer">
 </div>

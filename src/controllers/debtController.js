@@ -1,4 +1,5 @@
-import debtModel from '../models/debtModel.js';
+import debtService from '../services/debtService.js';
+
 
 const debtController = {
   getAllDebts: async (req, res) => {
@@ -12,7 +13,7 @@ const debtController = {
   createDebt: async (req, res) => {
     const debtData= req.body;
     try {
-      const newDebt = await debtModel.createDebt(debtData);
+      const newDebt = await debtService.createDebt(debtData);
       req.flash('success', 'Deuda creada exitosamente.');
       res.status(201).redirect('/debts/');
     } catch (error) {
@@ -27,7 +28,7 @@ const debtController = {
   getUpdateDebtForm: async (req, res) => {
     const { id } = req.params;
     try {
-      const debt = await debtModel.getDebtById(id);
+      const debt = await debtService.getDebtById(id);
       console.log("debt to update:", debt);
       if (debt) {
         req.debt = debt;
@@ -44,7 +45,7 @@ const debtController = {
     const { id } = req.params;
     const debtData = req.body;
     try {
-      const success = await debtModel.updateDebt(id, debtData);
+      const success = await debtService.updateDebt(id, debtData);
       if (success) {
         req.flash('success', 'Deuda actualizada exitosamente.');
         res.redirect('/debts/');
