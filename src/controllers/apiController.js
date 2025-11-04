@@ -11,14 +11,12 @@ const apiController = {
       return res.json([]);
     } else {
       try {
-        const [rows] = await pool.query(
-          'SELECT id, name FROM customer WHERE (name LIKE ? OR id LIKE ?) AND is_deleted = FALSE LIMIT 10',
-          [`%${query}%`, `${query}%`]
-        );
+        const rows = await customerService.searchCustomers(query);
         console.log("Search results for query", query, ":", rows);
-        res.json(rows);
+        return res.json(rows);
       } catch (err) {
-        res.status(500).json({ error: 'Error searching customers' });
+        console.error('Error searching customers:', err);
+        return res.status(500).json({ error: 'Error searching customers' });
       }
     }
   },

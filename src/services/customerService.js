@@ -1,6 +1,7 @@
 import Customer from '../models/customerModel.js';
 import Zone from '../models/zoneModel.js';
 import sequelize from '../config/sequelize.js';
+import { Op } from 'sequelize';
 
 const getBalanceLiteral = (customerIdField = 'Customer') => sequelize.literal(`
     (
@@ -109,7 +110,7 @@ const customerService = {
       const customers = await Customer.findAll({
         where: {
           name: {
-            [Customer.sequelize.Op.like]: `%${name}%`,
+            [Op.like]: `%${name}%`,
           },
           is_deleted: false,
         },
@@ -143,6 +144,32 @@ const customerService = {
       return customer.toJSON();
     } catch (err) {
       console.error('Error toggling customer status:', err);
+      throw err;
+    }
+  },
+  searchCustomers: async (searchTerm) => {
+    try {
+      const searchPattern = `%${searchTerm}%`;
+      const customers = await Customer.findAll({
+        attributes: ['id', 'name'],
+        where: {
+          is_deleted: false,
+          [Op.or]: [
+            { name: { [Op.iLike]: searchPattern } },
+            sequelize.where(
+              sequelize.cast(sequelize.col('id'), 'varchar'),
+              { [Op.like]: `${searchTerm}%` }
+            ),
+          ],
+        },
+        order: [['name', 'ASC']],
+        limit: 10,
+        raw: true,
+      });
+
+      return customers;
+    } catch (err) {
+      console.error('Error searching customers:', err);
       throw err;
     }
   },

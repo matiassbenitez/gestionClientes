@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const methodSelect = document.getElementById('method');
   const customerIdInput = document.getElementById('customer-id');
   const balanceDisplay = document.getElementById('customer-balance-display');
-  const dateInput = document.getElementById('date');
+  const dateInput = document.getElementById('transaction_date');
 
   document.addEventListener('customerSelected', (event) => {
     const customerId = event.detail.id;
