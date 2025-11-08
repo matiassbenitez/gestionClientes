@@ -39,7 +39,7 @@ const customerService = {
           attributes: ['id', 'name'],
         }],
         where: { is_deleted: false },
-        order: [['name', 'ASC']],
+        order: [['id', 'ASC']],
         raw: true,
         nest: true,
       });

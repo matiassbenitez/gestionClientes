@@ -205,8 +205,8 @@ getInitialBalance: async (customer_id, startDate) => {
     const report = await Transaction.findAll({
       attributes: [
         [sequelize.literal('EXTRACT(MONTH FROM transaction_date)'), 'month'],
-        [sequelize.fn('SUM', sequelize.literal(`CASE WHEN type = 'Ingreso' THEN amount WHEN type = 'Egreso' THEN -amount WHEN (type = 'Ajuste' AND amount > 0) THEN amount ELSE 0 END`)), 'total_ingreso'],
-        [sequelize.fn('SUM', sequelize.literal(`CASE WHEN type = 'Egreso' THEN amount WHEN type = 'Ingreso' THEN -amount WHEN (type = 'Ajuste' AND amount < 0) THEN -amount ELSE 0 END`)), 'total_egreso']
+        [sequelize.fn('SUM', sequelize.literal(`CASE WHEN type = 'Ingreso' THEN amount WHEN (type = 'Ajuste' AND amount > 0) THEN amount ELSE 0 END`)), 'total_ingreso'],
+        [sequelize.fn('SUM', sequelize.literal(`CASE WHEN type = 'Egreso' THEN amount WHEN (type = 'Ajuste' AND amount < 0) THEN -amount ELSE 0 END`)), 'total_egreso']
       ],
       where:{
         is_deleted: false,
