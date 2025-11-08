@@ -1,5 +1,6 @@
 import sequelize from "../config/sequelize.js";
 import Transaction from "../models/transactionModel.js";
+import Debt from "../models/debtModel.js";
 import { Op } from "sequelize";
 
 const getRunningBalanceLiteral = (initialBalance) => sequelize.literal(`(
@@ -216,11 +217,25 @@ getInitialBalance: async (customer_id, startDate) => {
       order: [[sequelize.literal('month'), 'ASC']],
       raw: true,
     });
+    const debtReport = await Debt.findAll({
+      attributes: [
+        [sequelize.literal('EXTRACT(MONTH FROM debt_date)'), 'month'],
+        [sequelize.fn('SUM', sequelize.col('amount')), 'total_deudas']
+      ],
+      where:{
+        [Op.and]: sequelize.literal(`EXTRACT(YEAR FROM debt_date) = ${year}`)
+      },
+      group: [sequelize.literal('EXTRACT(MONTH FROM debt_date)')],
+      order: [[sequelize.literal('month'), 'ASC']],
+      raw: true,
+    });
     const finalReport = [];
     for (let month = 1; month <= 12; month++) {
       const monthData = report.find(r => parseInt(r.month) === month);
+      const debtData = debtReport.find(d => parseInt(d.month) === month);
       finalReport.push({
         month,
+        total_deudas: debtData ? parseFloat(debtData.total_deudas) : 0,
         total_ingreso: monthData ? parseFloat(monthData.total_ingreso) : 0,
         total_egreso: monthData ? parseFloat(monthData.total_egreso) : 0,
       });

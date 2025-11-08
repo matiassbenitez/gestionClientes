@@ -47,11 +47,13 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const ingresosData = chartData.map(item => parseFloat(item.total_ingreso) || 0);
         const egresosData = chartData.map(item => parseFloat(item.total_egreso) || 0);
+        const deudasData = chartData.map(item => parseFloat(item.total_deudas) || 0);
         const labels = chartData.map(item => monthNames[item.month - 1]);
 
         const dataConfig = {
             labels: labels,
             datasets: [
+                { label: 'Deuda', data: deudasData, backgroundColor: 'rgba(255, 159, 64, 0.6)', borderColor: 'rgba(255, 159, 64, 1)', borderWidth: 1 },
                 { label: 'Ventas', data: egresosData, backgroundColor: 'rgba(255, 99, 132, 0.6)', borderColor: 'rgba(255, 99, 132, 1)', borderWidth: 1 },
                 { label: 'Ingresos', data: ingresosData, backgroundColor: 'rgba(75, 192, 192, 0.6)', borderColor: 'rgba(75, 192, 192, 1)', borderWidth: 1 }
             ]
@@ -74,14 +76,16 @@ document.addEventListener('DOMContentLoaded', () => {
         let html = '<div class="data-table">'
         html += '<div class="fixed-header table-header table-row">'
         html += '<span class="col-mes col-text-center">Mes</span>'
+        html += '<span class="col-egreso col-amount">Total Deudas</span>'
         html += '<span class="col-egreso col-amount">Total Ventas</span>'
-        html += '<span class="col-ingreso col-amount">Total Entregas</span>'
+        html += '<span class="col-ingreso col-amount">Total Ingresos</span>'
         html += '<span class="col-saldo col-amount">Saldo Neto</span>'
         html += '</div>';
 
         data.forEach((item) => {
             const ingresos = parseFloat(item.total_ingreso) || 0;
             const egresos = parseFloat(item.total_egreso) || 0;
+            const deudas = parseFloat(item.total_deudas) || 0;
             const saldoNeto = ingresos - egresos;
             
             const mes = monthNames[item.month - 1];
@@ -89,6 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             html += `<div class="table-body-row table-row">
                 <span class="col-mes col-text-center">${mes}</span>
+                <span class="col-egreso col-amount negative">$${deudas.toLocaleString('es-AR', { minimumFractionDigits: 2 })}</span>
                 <span class="col-egreso col-amount negative">$${egresos.toLocaleString('es-AR', { minimumFractionDigits: 2 })}</span>
                 <span class="col-ingreso col-amount positive">$${ingresos.toLocaleString('es-AR', { minimumFractionDigits: 2 })}</span>
                 <span class="col-saldo col-amount ${saldoClass}">$${saldoNeto.toLocaleString('es-AR', { minimumFractionDigits: 2 })}</span>
