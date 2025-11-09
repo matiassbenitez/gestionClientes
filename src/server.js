@@ -8,6 +8,7 @@ import './models/associations.js'
 dotenv.config()
 
 const PORT = process.env.PORT || 3000
+const host = '0.0.0.0';
 app.set('view engine', 'ejs')
 app.set('views', './src/views')
 
@@ -25,8 +26,9 @@ async function startServer() {
       app.locals.isSetupRequired = false
       console.log('✅ Admin user exists. You can log in normally.')
     }
-    app.listen(PORT, () => {
+    app.listen(PORT, host, () => {
       console.log(`Bellamoda running en http://localhost:${PORT}`)
+      console.log(`Servidor escuchando en ${host}:${PORT}`);
     })
   } catch (err) {
     console.error('❌ Error iniciando el servidor:', err)
