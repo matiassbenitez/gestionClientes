@@ -218,12 +218,14 @@ const transactionController = {
                 x += columnWidths[3];
               console.log('Drew transaction:', { detalle, fecha, monto, saldoFinal });
                 y += 15;
+                console.log('Current Y position:', y);
                 // Si llegamos cerca del final de la página, añadir una nueva página.
-                if (y > 750) { 
+                if (y > 735) { 
                     doc.addPage();
                     y = 50;
                     // Redibujar encabezados si es necesario.
                 }
+                console.log('Y position after checking page break:', y);
             });
 
 

@@ -162,7 +162,7 @@ const customerService = {
             ),
           ],
         },
-        order: [['name', 'ASC']],
+        order: [['id', 'ASC']],
         limit: 10,
         raw: true,
       });
