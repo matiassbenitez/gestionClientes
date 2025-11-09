@@ -502,6 +502,10 @@ form input[type="text"]:focus, form input[type="email"]:focus, form input[type="
     font-weight: bold;
 }
 
+#barChart {
+  width: 100%;
+}
+
 /* Estilo para hacerlo responsivo en dispositivos móviles (ajustar padding si es necesario) */
 @media (max-width: 600px) {
     .alert {
@@ -609,14 +613,203 @@ form input[type="text"]:focus, form input[type="email"]:focus, form input[type="
     
     /* 1. Redefinir la plantilla de columnas para móvil */
     .data-grid {
+        display:block;
         /* De las 6 columnas originales, solo quedan visibles 4: ID, Nombre, Teléfono, Acciones */
         grid-template-columns: 1fr 2fr 2fr 2fr; 
         /* ID(0.5) | Nombre(3) | Teléfono(2) | Acciones(1) */
         min-width: 100%; /* Asegura que ocupe todo el ancho del contenedor */
     }
+    .data-grid .table-row {
+    display: flex;
+    flex-direction: column; /* Apilar los elementos verticalmente */
+    border: 1px solid var(--border-color); /* Borde para delimitar la tarjeta */
+    margin-bottom: var(--spacing-unit); /* Espacio entre tarjetas */
+    border-radius: 8px;
+    background-color: #fff; /* Fondo blanco para destacar */
+    padding: 0; /* Quitar el padding general */
+}
+
+
+.data-grid .table-header {
+    display: none;
+}
 
     /* 2. Asegurar que las columnas ocultas realmente no se muestren */
     .data-grid .col-hide-mobile {
         display: none;
     }
+
+    form input[type="text"], 
+form input[type="email"], 
+form input[type="password"], 
+form input[type="number"], 
+form select {
+    /* Mantener el 100% de ancho */
+    width: 100%; 
+    /* **CLAVE:** Altura mínima para que sean fáciles de tocar */
+    min-height: 44px; 
+    /* Asegurar buena legibilidad en móvil */
+    font-size: 1.05rem; 
+    /* El resto de tus estilos están bien */
+    padding: calc(var(--spacing-unit) * 0.5); 
+    margin-bottom: calc(var(--spacing-unit) * 1.5);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Ajuste para el grupo de botones */
+.button-group {
+    /* En móvil, haz que los botones se apilen para facilitar la selección */
+    flex-direction: column; 
+    gap: 0.8rem;
+}
+.button-group button, .button-group .btn {
+    width: 100%; /* Ocupan todo el ancho de la tarjeta */
+}
+.table-header.movement-row {
+        display: none !important; /* Oculta los encabezados de columna en móvil */
+    }
+
+    /* 2. Transformar la fila en una Card */
+    .movement-row {
+        flex-direction: column; /* Apila los elementos verticalmente */
+        align-items: stretch; /* Estira los elementos al 100% de ancho */
+        border: 1px solid var(--border-color);
+        margin-bottom: var(--spacing-unit);
+        padding: 0; /* Quitamos el padding global para usarlo dentro de los span */
+        border-radius: 6px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    /* 3. Estilizar los spans (celdas) dentro de la Card */
+    .movement-row > span {
+        width: 100% !important; /* Asegurar ancho completo */
+        text-align: left !important; /* Alinear texto a la izquierda para mejor lectura */
+        padding: 8px 15px; /* Buen padding interno */
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    /* 4. Estilo especial para la información vital (Tipo/Monto) */
+    .movement-type {
+        font-weight: bold;
+        background-color: var(--background-color);
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+    }
+
+    .movement-amount {
+        font-size: 1.5em; /* Hacer el monto más grande y visible */
+        font-weight: bold;
+        /* Alinear a la derecha para destacar, usando flex para forzarlo */
+        display: flex; 
+        justify-content: space-between; 
+    }
+    
+    /* 5. Ocultar la columna de Saldo Final */
+    .movement-running-balance {
+        display: none; /* Se oculta para ahorrar espacio */
+    }
+
+    /* 6. Mejorar el botón de acción (Anular) */
+    .void-button-container {
+        /* Usar display flex para centrar el botón */
+        display: flex !important; 
+        justify-content: flex-end !important; 
+        padding-top: 10px;
+        padding-bottom: 10px;
+        background-color: #fafafa;
+        border-bottom: none;
+        border-bottom-left-radius: 6px;
+        border-bottom-right-radius: 6px;
+    }
+    
+    .void-button {
+        width: auto;
+        margin-right: 15px;
+    }
+
+    /* Mostrar la etiqueta de la fecha */
+    .movement-date::before {
+        content: "Fecha: ";
+        font-weight: normal;
+        color: var(--secondary-color);
+        margin-right: 5px;
+    }
+
+    /* Mostrar la etiqueta del monto */
+    .movement-amount::before {
+        content: "Monto: ";
+        font-weight: normal;
+        color: var(--secondary-color);
+    }
+    .data-table .fixed-header.table-row {
+    display: none !important; 
+}
+
+/* 2. Transformar la fila en una Card */
+.data-table .table-body-row {
+    display: flex;
+    flex-direction: column; /* Apilar los datos */
+    border: 1px solid var(--border-color);
+    margin-bottom: var(--spacing-unit);
+    padding: 0; 
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* 3. Estilo base para cada celda/span dentro de la Card */
+.data-table .table-body-row > span {
+    width: 100% !important; 
+    text-align: left !important; /* Texto alineado a la izquierda */
+    padding: 8px 15px; 
+    border-bottom: 1px dotted #e0e0e0;
+    /* Usar flex para separar la Etiqueta (::before) del Valor */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 4. Estilo del Mes (Título de la Card) */
+.data-table .col-mes {
+    font-size: 1.2em;
+    font-weight: bold;
+    background-color: var(--primary-color);
+    color: white;
+    border-bottom: 1px solid var(--primary-color);
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+/* 5. Estilo especial para el Saldo Neto */
+.data-table .col-saldo {
+    font-size: 1.3em;
+    font-weight: bold;
+    background-color: var(--background-color);
+    border-bottom: none;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+/* 6. Agregar etiquetas (::before) a las celdas de datos */
+.data-table .col-egreso.col-amount:nth-of-type(2)::before {
+    content: "Deudas:";
+    font-weight: normal;
+    color: var(--secondary-color);
+}
+.data-table .col-egreso.col-amount:nth-of-type(3)::before {
+    content: "Ventas:";
+    font-weight: normal;
+    color: var(--secondary-color);
+}
+.data-table .col-ingreso.col-amount::before {
+    content: "Ingresos:";
+    font-weight: normal;
+    color: var(--secondary-color);
+}
+.data-table .col-saldo.col-amount::before {
+    content: "Saldo Neto:";
+    font-weight: normal;
+    color: var(--secondary-color);
+}
 }

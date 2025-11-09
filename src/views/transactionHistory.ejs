@@ -9,7 +9,7 @@
     <label for="endDate">Fecha de Fin:</label>
     <input type="date" id="endDate" name="endDate" value="<%= endDate || '' %>">
     <button type="submit">Filtrar/Mostrar Historial</button>
-    <a href="/transactions?customer_id=<%= customer.id %>&customer_name=<$= customer.name %>">Limpiar Filtros</a>
+    <a href="/transactions?customer_id=<%= customer.id %>&customer_name=<%= customer.name %>">Limpiar Filtros</a>
 </form>
 <div id="transaction-table" class="data-table"></div>
 <a href="/" class="btn btn-back">Volver al inicio</a>
