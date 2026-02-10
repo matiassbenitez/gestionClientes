@@ -1,6 +1,8 @@
 import sequelize from "../config/sequelize.js";
 import Transaction from "../models/transactionModel.js";
 import Debt from "../models/debtModel.js";
+import Customer from "../models/customerModel.js";
+import Zone from "../models/zoneModel.js";
 import { Op } from "sequelize";
 
 const getRunningBalanceLiteral = (initialBalance) => sequelize.literal(`(
@@ -242,6 +244,57 @@ getInitialBalance: async (customer_id, startDate) => {
     }
     return finalReport;
   },
+  getMonthlyReportGroupedByZone: async (year, month) => {
+    const sequelize = Transaction.sequelize;
+    console.log(`Generando informe mensual por zona para ${month}/${year}`);
+    
+    const report = await Transaction.findAll({
+      attributes: [
+        // 1. CORRECCIÓN: Usar la ruta completa de la asociación
+        [sequelize.col('customer.zone.name'), 'zone_name'], 
+        
+        // 2. Cálculo de Ingresos y Egresos (sin cambios)
+        [sequelize.fn('SUM', sequelize.literal(`CASE WHEN "Transaction".type = 'Ingreso' THEN "Transaction".amount WHEN ("Transaction".type = 'Ajuste' AND "Transaction".amount > 0) THEN "Transaction".amount ELSE 0 END`)), 'total_ingreso'],
+        [sequelize.fn('SUM', sequelize.literal(`CASE WHEN "Transaction".type = 'Egreso' THEN "Transaction".amount WHEN ("Transaction".type = 'Ajuste' AND "Transaction".amount < 0) THEN -"Transaction".amount ELSE 0 END`)), 'total_egreso']
+      ],
+      include: [{
+        model: Customer,
+        as: 'customer', // <-- Alias 1
+        attributes: [], 
+        required: true, 
+        include: [{ 
+            model: Zone, 
+            as: 'zone', // <-- Alias 2
+            attributes: [], 
+            required: true, 
+        }]
+      }],
+      where:{
+        is_deleted: false,
+        [Op.and]: [
+          sequelize.literal(`EXTRACT(YEAR FROM transaction_date) = ${year}`),
+          sequelize.literal(`EXTRACT(MONTH FROM transaction_date) = ${month}`)
+        ]
+      },
+      // 3. El GROUP BY ['zone_name'] ya es la solución final y es correcto
+      group: ['zone_name'], 
+      order: [
+          [sequelize.col('zone_name'), 'ASC'] // También usamos el alias de columna aquí
+      ],
+      raw: true,
+    });
+    console.log(`Informe generado:`, report);
+    return {
+      month,
+      year,
+      reportByZone: report.map(item => ({
+          zone: item.zone_name, // Usamos el alias 'zone_name'
+          total_ingreso: parseFloat(item.total_ingreso) || 0,
+          total_egreso: parseFloat(item.total_egreso) || 0,
+          total_saldo: (parseFloat(item.total_egreso) || 0) - (parseFloat(item.total_ingreso) || 0)
+      }))
+    };
+},
   getAvailableYears: async () => {
     const sequelize = Transaction.sequelize;
     const years = await Transaction.findAll({
@@ -253,7 +306,27 @@ getInitialBalance: async (customer_id, startDate) => {
       raw: true,
     });
     return years.map(y => parseInt(y.year));
-  }
+  },
+  getAvailableMonthsYears: async () => {
+    const sequelize = Transaction.sequelize;
+    const monthsYears = await Transaction.findAll({
+      attributes: [
+        [sequelize.fn('EXTRACT', sequelize.literal('YEAR FROM transaction_date')), 'year'],
+        [sequelize.fn('EXTRACT', sequelize.literal('MONTH FROM transaction_date')), 'month']
+      ],
+      where: { is_deleted: false },
+      group: [
+          sequelize.literal('EXTRACT(YEAR FROM transaction_date)'),
+          sequelize.literal('EXTRACT(MONTH FROM transaction_date)')
+      ],
+      order: [[sequelize.literal('year'), 'ASC'], [sequelize.literal('month'), 'ASC']],
+      raw: true,
+    });
+    return monthsYears.map(my => ({
+      year: parseInt(my.year),
+      month: parseInt(my.month)
+    }));
+  },
     
   };
 

@@ -1,6 +1,7 @@
+import Customer from "../services/customerService.js";
 
 const mainController = {
-  getHomePage: (req, res) => {
+  getHomePage: async (req, res) => {
     const isSetupRequired = req.app.locals.isSetupRequired;
     if (isSetupRequired) {
       return res.redirect('/setup'); // Redirect to setup if no admin user exists
@@ -8,7 +9,8 @@ const mainController = {
       if (!req.session.token){
         return res.redirect('/login'); // Redirect to login if admin user exists
       } else {
-        res.render('index', {title: 'Inicio'}) // Render the index.ejs file
+        const customerCount = await Customer.countCustomers();         
+        res.render('index', {title: 'Inicio', count: customerCount}) // Render the index.ejs file
       }
     }
   }

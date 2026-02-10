@@ -1,16 +1,16 @@
-<script src="/js/annual-chart.js" defer></script>
+<script src="/js/monthly-chart.js" defer></script>
 <h1 class="my-4 text-center text-primary"><%= title %></h1> 
 <form id="reportForm" class="mb-4">
     <div class="form-group d-flex align-items-center">
-        <label for="yearSelect" class="mr-3">Seleccionar Año:</label>
-        <select name="year" id="yearSelect" class="form-control w-auto mr-3">
-            <% availableYears.forEach(year => { %>
-                <option value="<%= year %>" <%= (year == selectedYear) ? 'selected' : '' %>>
-                    <%= year %>
+        <label for="monthInput" class="mr-3">Seleccionar Mes:</label>
+        <select name="month" id="monthInput" class="form-control w-auto mr-3">
+            <% availableMonths.forEach(my => { %>
+                <option value="<%= my.month.value %>" <%= (my.month.value == selectedMonthYear) ? 'selected' : '' %>>
+                    <%= my.month %>/<%= my.year %>
                 </option>
             <% }); %>
         </select>
-        </div>
+    </div>
 </form>
 <canvas id="barChart" data-chart-data='<%- JSON.stringify(chartData) %>'></canvas>
 <div id="reportTableContainer">

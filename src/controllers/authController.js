@@ -66,5 +66,17 @@ const authController = {
       //res.status(500).json({ error: 'Server error' });
     }
   },
+  logout: (req, res) => {
+    req.session.destroy((err) => {
+      if (err) {
+        console.error('Error during logout:', err);
+        req.flash('error_msg', 'Error during logout');
+        return res.redirect('/');
+      }
+      res.clearCookie('connect.sid');
+      //req.flash('success_msg', 'Logged out successfully');
+      res.redirect('/login');
+    });
+  },
 }
 export default authController;

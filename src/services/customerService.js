@@ -173,6 +173,17 @@ const customerService = {
       throw err;
     }
   },
+  countCustomers: async () => {
+    try {
+      const count = await Customer.count({
+        where: { is_deleted: false },
+      });
+      return count;
+    } catch (err) {
+      console.error('Error counting customers:', err);
+      throw err;
+    }
+  },
 };
 
 export default customerService;

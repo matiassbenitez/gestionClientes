@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!response.ok) { throw new Error(`Error HTTP: ${response.status}`); }
             
             const data = await response.json();
-            
+            console.log("data annual: ",data);
             if (data.success && data.report) {
                 renderChart(data.report); 
                 renderTable(data.report); 

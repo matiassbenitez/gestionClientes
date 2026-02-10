@@ -7,7 +7,13 @@
   <a class="btn btn-primary" href="/zones">Gestionar Zonas</a>
   <a class="btn btn-primary" href="/report/2024">Ver Reporte 2024</a>
 </div> -->
+   <form action="/logout" method="POST" style="display: inline;">
+      <button class="btn btn-outline-danger" type="submit">
+        Cerrar Sesión
+      </button>
+    </form>
 <h1 class="my-4 text-center text-primary">Gestión de Clientes</h1> 
+<p>Cantidad de clientes: <%= count %></p>
 <div class="d-flex gap-2 mb-4 flex-wrap justify-content-center">
 
     <div class="dropdown">
