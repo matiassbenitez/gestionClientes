@@ -71,20 +71,21 @@ document.addEventListener('DOMContentLoaded', () => {
         let html = '<div class="data-table">'
         html += '<div class="fixed-header table-header table-row">'
         html += '<span class="col-zone col-text-center">Zona</span>'
-        html += '<span class="col-ingresos col-text-right">Ingresos ($)</span>'
-        html += '<span class="col-egresos col-text-right">Egresos ($)</span>'
+        html += '<span class="col-egreso col-text-right">Ventas ($)</span>'
+        html += '<span class="col-ingreso col-text-right">Ingresos ($)</span>'
         html += '<span class="col-saldo col-text-right">Saldo ($)</span>'
         html += '</div>';
 
         data.forEach(item => {
           const ingresos = parseFloat(item.total_ingreso) || 0;
           const egresos = parseFloat(item.total_egreso) || 0;
-          const saldo = egresos - ingresos;
+          const saldo = ingresos - egresos;
+          const saldoClass = saldo >=0 ? 'positive' : 'negative'
           html += '<div class="table-body-row table-row">'
           html += `<span class="col-zone col-text-center">${item.zone}</span>`;
-          html += `<span class="col-ingresos col-text-right">${ingresos.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })}</span>`;
-          html += `<span class="col-egresos col-text-right">${egresos.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })}</span>`;
-          html += `<span class="col-saldo col-text-right">${saldo.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })}</span>`;
+          html += `<span class="col-egreso col-text-right">${egresos.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })}</span>`;
+          html += `<span class="col-ingreso col-text-right">${ingresos.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })}</span>`;
+          html += `<span class="col-saldo col-text-right ${saldoClass} ">${saldo.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })}</span>`;
           html += '</div>';
         });
         html += '</div>';

@@ -343,6 +343,10 @@ form input[type="text"]:focus, form input[type="email"]:focus, form input[type="
     flex: 2; /* Mes ocupa más espacio a la izquierda */
     padding-left: 10px;
 }
+.col-zone {
+    flex: 5; /* Zone ocupa más espacio a la izquierda */
+    padding-left: 10px;
+}
 
 .col-ingreso, .col-egreso, .col-saldo {
     flex: 3; /* Los montos ocupan más espacio */
