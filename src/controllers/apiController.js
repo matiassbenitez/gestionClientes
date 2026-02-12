@@ -94,6 +94,16 @@ const apiController = {
     } catch (err) {
       return next(err);
     }
+  },
+  getMonthlyDataJSON: async (req, res, next) => {
+    try {
+      const year = req.query.year ? parseInt(req.query.year) : new Date().getFullYear();
+      const month = req.query.month ? parseInt(req.query.month) : new Date().getMonth()+1;
+      const monthlyData = await transactionService.getMonthlyReportGroupedByZone(year, month);
+      return res.json({ success:true, report:monthlyData });
+    } catch (err) {
+      return next(err);
+    }
   }
 };
 

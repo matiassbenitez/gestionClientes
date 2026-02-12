@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvasElement = document.getElementById('barChart');
     const tableContainer = document.getElementById('reportTableContainer');
     const yearSelect = document.getElementById('yearSelect');
-    const title = document.getElementById('title');
     
     // Si no existen los elementos necesarios, terminamos la ejecución
     if (!canvasElement || !tableContainer || !yearSelect) {
@@ -20,17 +19,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
     async function updateReport(year) {
         try {
-
-            if (title) {
-              title.textContent = `Informe Anual ${year}`
-            }
             tableContainer.innerHTML = 'Cargando reporte...';
             // Llamada AJAX
             const response = await fetch(`/api/report/annual-data?year=${year}`);
             if (!response.ok) { throw new Error(`Error HTTP: ${response.status}`); }
             
             const data = await response.json();
-            console.log("data annual: ",data);
+            
             if (data.success && data.report) {
                 renderChart(data.report); 
                 renderTable(data.report); 

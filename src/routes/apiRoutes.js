@@ -9,4 +9,5 @@ router.get('/search', authMiddleware, apiController.searchCustomers);
 router.get('/customers/:customerId/balance', authMiddleware, apiController.getCustomerBalance);
 router.get('/customers/:customerId/transactions', authMiddleware, apiController.getCustomerTransactionDataJSON);
 router.get('/report/annual-data', authMiddleware, apiController.getAnnualDataJSON);
+router.get('/report/monthly-data', authMiddleware, apiController.getMonthlyDataJSON);
 export default router;

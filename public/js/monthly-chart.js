@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvasElement = document.getElementById('barChart');
     const tableContainer = document.getElementById('reportTableContainer');
     const monthInput = document.getElementById('monthInput');
+    const title = document.getElementById('title');
   
     // Si no existen los elementos necesarios, terminamos la ejecución
     if (!canvasElement || !tableContainer || !monthInput) {
@@ -15,14 +16,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function updateReport(year,month) {
         try {
+
+            if (title) {
+              title.textContent = `Informe Mensual ${month}/${year}`
+            }
             tableContainer.innerHTML = 'Cargando reporte...';
-            const response = await fetch(`/api/reports/monthly-data?year=${year}&month=${month}`);
+            const response = await fetch(`/api/report/monthly-data?year=${year}&month=${month}`);
             if (!response.ok) { throw new Error(`Error HTTP: ${response.status}`); }
             const data = await response.json();
             console.log("data monthly: ",data);
             if (data.success && data.report) {
                 renderChart(data.report.reportByZone); 
-                renderTable(data.report); 
+                renderTable(data.report.reportByZone); 
             } else {
                 tableContainer.innerHTML = `<p class="alert alert-warning">No se encontraron datos para el mes seleccionado.</p>`;
                 if (balanceChart) balanceChart.destroy();
@@ -99,10 +104,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     monthInput.addEventListener('change', () => {
-        const selectedMonth = monthInput.value;
-        monthInput.value = selectedMonth;
-        const currentYear = new Date().getFullYear(); 
-        updateReport(currentYear, selectedMonth);
+        const [month, year] = monthInput.value.split('/');
+        updateReport(year, month);
     });
 
   });
