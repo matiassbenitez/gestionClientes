@@ -58,9 +58,10 @@ document.addEventListener('DOMContentLoaded', () => {
             type: 'bar',
             data: dataConfig,
             options: {
+                indexAxis: 'y',
                 responsive: true,
                 scales: {
-                    y: {
+                    x: {
                         beginAtZero: true
                     }
                 }
@@ -83,9 +84,9 @@ document.addEventListener('DOMContentLoaded', () => {
           const saldoClass = saldo >=0 ? 'positive' : 'negative'
           html += '<div class="table-body-row table-row">'
           html += `<span class="col-zone col-text-center">${item.zone}</span>`;
-          html += `<span class="col-egreso col-text-right">${egresos.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })}</span>`;
-          html += `<span class="col-ingreso col-text-right">${ingresos.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })}</span>`;
-          html += `<span class="col-saldo col-text-right ${saldoClass} ">${saldo.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })}</span>`;
+          html += `<span class="col-egreso col-text-right"><small class="d-md-none text-muted">Ventas: </small>${egresos.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })}</span>`;
+          html += `<span class="col-ingreso col-text-right"><small class="d-md-none text-muted">Ingresos: </small>${ingresos.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })}</span>`;
+          html += `<span class="col-saldo col-text-right ${saldoClass} "><small class="d-md-none text-muted">Saldo: </small>${saldo.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })}</span>`;
           html += '</div>';
         });
         html += '</div>';
