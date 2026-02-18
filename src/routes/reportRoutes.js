@@ -5,7 +5,7 @@ const router = express.Router();
 
 //Ruta para obtener un informe anual por meses (opcional, no implementada en el controlador aún)
 router.get('/report', authMiddleware, transactionController.getAnnualReport);
-router.get('/report/monthly', authMiddleware, transactionController.getMonthlyReport);
+router.get('/report/general', authMiddleware, transactionController.getMonthlyReport);
 
 
 

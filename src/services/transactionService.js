@@ -244,9 +244,9 @@ getInitialBalance: async (customer_id, startDate) => {
     }
     return finalReport;
   },
-  getMonthlyReportGroupedByZone: async (year, month) => {
+  getMonthlyReportGroupedByZone: async () => {
     const sequelize = Transaction.sequelize;
-    console.log(`Generando informe mensual por zona para ${month}/${year}`);
+    console.log(`Generando informe GENERAL`);
     
     const report = await Transaction.findAll({
       attributes: [
@@ -271,10 +271,6 @@ getInitialBalance: async (customer_id, startDate) => {
       }],
       where:{
         is_deleted: false,
-        [Op.and]: [
-          sequelize.literal(`EXTRACT(YEAR FROM transaction_date) = ${year}`),
-          sequelize.literal(`EXTRACT(MONTH FROM transaction_date) = ${month}`)
-        ]
       },
       // 3. El GROUP BY ['zone_name'] ya es la solución final y es correcto
       group: ['zone_name'], 
@@ -285,8 +281,6 @@ getInitialBalance: async (customer_id, startDate) => {
     });
     console.log(`Informe generado:`, report);
     return {
-      month,
-      year,
       reportByZone: report.map(item => ({
           zone: item.zone_name, // Usamos el alias 'zone_name'
           total_ingreso: parseFloat(item.total_ingreso) || 0,

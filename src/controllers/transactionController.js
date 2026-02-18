@@ -90,18 +90,17 @@ const transactionController = {
     }
   },
   getMonthlyReport: async (req, res) => {
-    const availableMonths = await transactionService.getAvailableMonthsYears();
-    let monthYear = availableMonths.length > 0 ? availableMonths[0] : { month: new Date().getMonth() + 1, year: new Date().getFullYear() };
-    if (req.query.month && req.query.year) {
-      monthYear = { month: parseInt(req.query.month, 10), year: parseInt(req.query.year, 10) };
-    } 
+    //const availableMonths = await transactionService.getAvailableMonthsYears();
+    //let monthYear = availableMonths.length > 0 ? availableMonths[0] : { month: new Date().getMonth() + 1, year: new Date().getFullYear() };
+    //if (req.query.month && req.query.year) {
+    //  monthYear = { month: parseInt(req.query.month, 10), year: parseInt(req.query.year, 10) };
+    //} 
     try {
-      const report = await transactionService.getMonthlyReportGroupedByZone(monthYear.year, monthYear.month);
+      const report = await transactionService.getMonthlyReportGroupedByZone();
+      console.log('Hola')
       console.log("Monthly report data:", report.reportByZone);
       res.render('chartMonthly', { 
-        title: `Informe Mensual ${monthYear.month}/${monthYear.year}`, 
-        availableMonths: availableMonths,
-        selectedMonthYear: monthYear,
+        title: `Informe General`, 
         chartData:report.reportByZone });
       //res.json(report);
     } catch (err) {
