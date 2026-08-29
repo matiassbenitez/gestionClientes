@@ -10,6 +10,7 @@ const getBalanceLiteral = (customerIdField = 'Customer') => sequelize.literal(`
                 CASE
                     WHEN t.type = 'Ingreso' THEN t.amount
                     WHEN t.type = 'Egreso' THEN -t.amount
+                    WHEN t.type = 'Ajuste' THEN t.amount
                     ELSE 0
                 END
             ), 0)
