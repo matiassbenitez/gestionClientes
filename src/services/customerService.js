@@ -185,6 +185,38 @@ const customerService = {
       throw err;
     }
   },
+  getTotalOwed: async () => {
+    try {
+      const [rows] = await sequelize.query(`
+        SELECT COALESCE(SUM(balances.balance), 0) AS total_owed
+        FROM (
+          SELECT
+            c.id,
+            COALESCE(SUM(
+              CASE
+                WHEN t.type = 'Ingreso' THEN t.amount
+                WHEN t.type = 'Egreso' THEN -t.amount
+                WHEN t.type = 'Ajuste' THEN t.amount
+                ELSE 0
+              END
+            ), 0) AS balance
+          FROM customers c
+          LEFT JOIN transactions t
+            ON t.customer_id = c.id
+            AND t.is_deleted = FALSE
+            AND t.is_reconciled = FALSE
+          WHERE c.is_deleted = FALSE
+          GROUP BY c.id
+        ) balances
+        WHERE balances.balance < 0
+      `);
+      const total = parseFloat(rows[0]?.total_owed) || 0;
+      return Math.abs(total);
+    } catch (err) {
+      console.error('Error calculating total owed:', err);
+      throw err;
+    }
+  },
 };
 
 export default customerService;

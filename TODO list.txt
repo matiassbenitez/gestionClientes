@@ -1,0 +1,7 @@
+Verificar que no se puedan hacer dobles ingresos, inhabiitar botón luego de pulsarlo
+
+aplicar cambio de conciliación
+
+ver nombre de cliente luego de hacer transaction
+
+Agregar botón para agregar otra transaction (si se pueden insertar todas juntas, mejor)

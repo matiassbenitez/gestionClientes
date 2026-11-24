@@ -97,11 +97,12 @@ const transactionController = {
     //} 
     try {
       const report = await transactionService.getMonthlyReportGroupedByZone();
-      console.log('Hola')
+      const totalOwed = await customerService.getTotalOwed();
       console.log("Monthly report data:", report.reportByZone);
       res.render('chartMonthly', { 
         title: `Informe General`, 
-        chartData:report.reportByZone });
+        chartData:report.reportByZone,
+        totalOwed });
       //res.json(report);
     } catch (err) {
       res.status(500).json({ error: 'Error al generar el informe mensual' });

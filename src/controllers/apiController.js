@@ -98,7 +98,8 @@ const apiController = {
   getMonthlyDataJSON: async (req, res, next) => {
     try {
       const monthlyData = await transactionService.getMonthlyReportGroupedByZone();
-      return res.json({ success:true, report:monthlyData });
+      const totalOwed = await customerService.getTotalOwed();
+      return res.json({ success:true, report:monthlyData, totalOwed });
     } catch (err) {
       return next(err);
     }

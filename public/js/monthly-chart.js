@@ -27,6 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (data.success && data.report) {
         renderChart(data.report.reportByZone);
         renderTable(data.report.reportByZone);
+        const totalOwedEl = document.getElementById('totalOwed');
+        if (totalOwedEl && typeof data.totalOwed === 'number') {
+          totalOwedEl.textContent = data.totalOwed.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' });
+        }
       } else {
         tableContainer.innerHTML = `<p class="alert alert-warning">No se encontraron datos para el mes seleccionado.</p>`;
         if (balanceChart) balanceChart.destroy();
